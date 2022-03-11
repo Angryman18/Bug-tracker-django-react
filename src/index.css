@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Ubuntu, "sans-serif";
+}
+
+.success {
+  width: 75px;
+  @apply text-sm flex items-center justify-center text-darkGreen px-1 py-0.5 bg-lightGreen font-medium rounded-full;
+}
+
+.warning {
+  width: 75px;
+  @apply text-sm flex items-center justify-center text-deepYellow px-1 py-0.5 bg-lightYellow font-medium rounded-full;
+}
+
+.danger {
+  width: 75px;
+  @apply text-sm flex items-center justify-center text-deepRed px-1 py-0.5 bg-lightRed font-medium rounded-full;
+}
+
+.primary {
+  width: 75px;
+  @apply text-sm flex items-center justify-center text-deepSky px-1 py-0.5 bg-lightSky font-medium rounded-full;
+}
+
+.secondary {
+  width: 75px;
+  @apply text-sm flex items-center justify-center text-deepSlate px-1 py-0.5 bg-lightSlate font-medium rounded-full;
+}

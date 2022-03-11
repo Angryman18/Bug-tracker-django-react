@@ -9,6 +9,7 @@ const {InjectManifest} = require("workbox-webpack-plugin");
 
 module.exports = {
   mode: "production",
+  devtool: false,
   entry: path.resolve(__dirname, "./src/index.js"),
   output: {
     path: path.resolve(__dirname, "dist"),

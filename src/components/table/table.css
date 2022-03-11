@@ -1,0 +1,33 @@
+table {
+  border-spacing: 0;
+  border: 1px solid #ddd;
+}
+
+th,
+td {
+  margin: 0;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+th {
+  color: #0e7490;
+}
+
+td {
+  @apply text-sideBarText;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  @apply px-4
+}
+
+.page {
+  cursor: pointer;
+  @apply border border-sideBarBorder p-1 text-cyan-600 text-lg;
+}

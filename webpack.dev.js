@@ -7,6 +7,7 @@ const { InjectManifest } = require("workbox-webpack-plugin");
 
 module.exports = {
   mode: "development",
+  devtool: "inline-source-map",
   entry: path.join(__dirname, "./src/index.js"),
   output: {
     path: path.join(__dirname, "dist"),
@@ -40,7 +41,7 @@ module.exports = {
     }),
     new miniCssExtractPlugin({ filename: "[contenthash].css" }),
     new dotenv({
-      path: './.env.development',
+      path: "./.env.development",
       systemvars: true,
     }),
     new CopyWebpack({
@@ -64,5 +65,6 @@ module.exports = {
         warnings: false,
       },
     },
+    historyApiFallback: true,
   },
 };

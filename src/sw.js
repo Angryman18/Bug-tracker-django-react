@@ -15,7 +15,6 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 registerRoute(
   ({ request }) => {
-    console.log('this is request object', request);
     return request.destination === "image";
   },
   new CacheFirst({

@@ -1,0 +1,6 @@
+
+
+
+.element {
+    @apply h-12 w-full flex justify-start items-center p-2 pl-3 text-gray-600 hover:bg-sideBarBorder duration-200 hover:pl-4 hover:text-sky-600 cursor-pointer gap-x-2 overflow-hidden
+}
