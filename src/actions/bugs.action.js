@@ -13,4 +13,16 @@ const saveAllBugs = () => (dispatch) => {
     });
 };
 
-export default saveAllBugs;
+const filterAllBugs = (Obj) => (dispatch) => {
+  return BugService.getFilteredBugs(Obj)
+    .then((res) => {
+      dispatch({ type: GET_BUGS, payload: res });
+      return res;
+    })
+    .catch((err) => {
+      console.log(err);
+      return err.data;
+    });
+};
+
+export {filterAllBugs, saveAllBugs};

@@ -1,3 +1,4 @@
+// vendors
 import React from "react";
 import {
   useBlockLayout,
@@ -13,6 +14,10 @@ import {
   FiChevronsRight,
   FiChevronsLeft,
 } from "react-icons/fi";
+import isEmpty from "ramda/src/isEmpty";
+
+// components
+import GlobalFilterInput from "./globalFilter";
 
 // css
 import "./table.css";
@@ -33,7 +38,8 @@ const Table = ({ columns, data, pagination }) => {
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    setGlobalFilter,
+    state: { pageIndex, pageSize, globalFilter },
   } = useTable(
     {
       columns,
@@ -46,7 +52,14 @@ const Table = ({ columns, data, pagination }) => {
   );
   return (
     <div className='w-full'>
-      <table className='w-full' {...getTableProps()}>
+      <div className='w-full sm:w-64 py-4'>
+        <GlobalFilterInput
+          filter={globalFilter}
+          setGlobalFilter={setGlobalFilter}
+        />
+      </div>
+      <div className="w-full overflow-x-auto">
+      <table className="w-full" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -83,8 +96,14 @@ const Table = ({ columns, data, pagination }) => {
                 </tr>
               );
             })}
+          {pagination && isEmpty(page) && (
+            <tr className='text-center text-sideBarText py-3'>
+              <td colSpan={columns.length}>No data Found</td>
+            </tr>
+          )}
         </tbody>
       </table>
+      </div>
       <div className='pagination'>
         <div className='flex flex-col gap-y-1'>
           <span>
@@ -94,7 +113,7 @@ const Table = ({ columns, data, pagination }) => {
             </strong>{" "}
           </span>
           <select
-          className="px-1 py-0.5 rounded-md"
+            className='px-1 py-0.5 rounded-md'
             value={pageSize}
             onChange={(e) => {
               setPageSize(Number(e.target.value));
@@ -107,7 +126,7 @@ const Table = ({ columns, data, pagination }) => {
             ))}
           </select>
         </div>
-        <div className="flex flex-row gap-x-1">
+        <div className='flex flex-row gap-x-1'>
           <div
             className='page'
             onClick={() => gotoPage(0)}

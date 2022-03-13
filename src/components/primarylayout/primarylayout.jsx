@@ -1,103 +1,85 @@
 // vendors
-import tw from "tailwind-styled-components";
-import React from "react";
+import React, { useState } from "react";
 import { AiFillHome, AiFillBug } from "react-icons/ai";
 import { BsFillPeopleFill, BsFillGridFill } from "react-icons/bs";
-import { BiUserCircle } from "react-icons/bi";
+import { BiUserCircle, BiMenu } from "react-icons/bi";
 import { Outlet } from "react-router-dom";
 import { NavLink, Link } from "react-router-dom";
 import "./layout.css";
 
 const PrimaryLayout = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const toggle = (e) => {
+    setSidebarOpen(!sidebarOpen);
+  };
   return (
-    <Container>
-      <LeftBar>
-        <Welcome>
-          {/* <BiUserCircle className='h-16 w-16' /> */}
-          <Name>
-            Welcome,
-            <Text>Shyam,</Text>
-          </Name>
-        </Welcome>
-        <Wrapper>
-          <NavLink to='/bug' className='element'>
-            <AiFillHome className='text-lg' />
-            Dashboard
-          </NavLink>
-          <NavLink to='/reportbug' className='element'>
-            <AiFillBug className='text-lg' />
-            Report Bug
-          </NavLink>
-          <NavLink to='/users' className='element'>
-            <BsFillPeopleFill className='text-lg' />
-            Users
-          </NavLink>
-          <NavLink to='/feature-request' className='element'>
-            <BsFillGridFill className='text-lg' />
-            Feature Request
-          </NavLink>
-          {/* <Element>Others</Element> */}
-        </Wrapper>
-      </LeftBar>
-      <aside className='w-full overflow-y-auto'>
+    <div className='md:flex relative h-screen'>
+      <div className='w-full flex justify-between items-center px-3 h-12 md:hidden bg-sideBarBg border-b border-sideBarBorder shadow-sm'>
+        <button className='focus:bg-black focus:text-white' onClick={toggle}>
+          <BiMenu className='text-4xl' />
+        </button>
+        <div className='text-lg'>Bug Tacer</div>
+      </div>
+      {/* backdrop */}
+      {sidebarOpen && (
+        <div
+          onClick={toggle}
+          className='bg-black fixed top-0 bottom-0 left-0 right-0 opacity-50 z-20 md:hidden pointer-events-auto'
+        />
+      )}
+      {/* nav */}
+      <div
+        className={`w-52 absolute z-30 opacity-100 transform ${
+          !sidebarOpen && "-translate-x-full md:translate-x-0 md:relative"
+        } transition-all duration-200 top-0 bottom-0 left-0 bg-sideBarBg border-r border-sideBarBorder`}
+      >
+        <NavLink
+          to='/dashboard'
+          onClick={() => setSidebarOpen(false)}
+          className={({ isActive }) =>
+            isActive ? "element active" : "element"
+          }
+        >
+          <AiFillHome className='text-lg' />
+          Dashboard
+        </NavLink>
+        <NavLink
+          to='/bug'
+          onClick={() => setSidebarOpen(false)}
+          className={({ isActive }) =>
+            isActive ? "element active" : "element"
+          }
+        >
+          <AiFillBug className='text-lg' />
+          Bug Traced
+        </NavLink>
+        <NavLink
+          to='/users'
+          onClick={() => setSidebarOpen(false)}
+          className={({ isActive }) =>
+            isActive ? "element active" : "element"
+          }
+        >
+          <BsFillPeopleFill className='text-lg' />
+          Users
+        </NavLink>
+        <NavLink
+          to='/feature-request'
+          onClick={() => setSidebarOpen(false)}
+          className={({ isActive }) =>
+            isActive ? "element active" : "element"
+          }
+        >
+          <BsFillGridFill className='text-lg' />
+          Feature Request
+        </NavLink>
+      </div>
+      {/* content */}
+      <div className='flex-1 overflow-hidden z-10'>
         <Outlet />
-      </aside>
-    </Container>
+      </div>
+    </div>
   );
 };
 
 export default PrimaryLayout;
-
-const LeftBar = tw.aside`
-    w-52
-    bg-sideBarBg
-    absolute
-    left-0
-    top-0
-    bottom-0
-    border-r
-    border-sideBarBorder
-    overflow-y-hidden
-
-`;
-
-const Wrapper = tw.div`
-    w-full
-    flex
-    flex-col
-    justify-start
-    items-center
-    gap-x-2
-`;
-
-const Welcome = tw.div`
-    w-full
-    flex
-    flex-row
-    justify-start
-    items-center
-    h-20
-    text-sideBarText
-    gap-y-1
-`;
-const Name = tw.div`
-    flex-1
-    h-full
-    w-full
-    flex
-    flex-col
-    items-center
-    justify-start
-    mt-2
-`;
-const Text = tw.div`
-    text-2xl
-    text-violet-600
-`;
-
-const Container = tw.div`
-  w-full
-  h-screen
-  relative
-  pl-52
-`;

@@ -1,22 +1,37 @@
 // vendors
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../components/table/table.jsx";
 import { useSelector, useDispatch } from "react-redux";
-import { Label } from "@material-tailwind/react";
-import H1 from "@material-tailwind/react/Heading1";
-import format from "date-fns/format";
+import { Button, Label } from "@material-tailwind/react";
 import formatDistance from "date-fns/formatDistance";
-import subDays from "date-fns/subDays";
+import { addDays, subDays, format } from "date-fns";
+
+// actions
+
 
 // services
-import saveAllBugs from "../../actions/bugs.action";
+import bugServices from "../../services/bug.services.js";
 
-// css
-// import './design.css'
+// components
+import Modal from "../../components/modal/Modal.jsx";
+import ModalHeader from "../../components/modal/ModalHeader.jsx";
+import ModalFooter from "../../components/modal/ModalFooter.jsx";
+import Spinner from "../../components/spinner/spinner.jsx";
+import ReactDatePicker from "../../components/datepicker/datepicker.jsx";
 
 function BugPage() {
   const dispatch = useDispatch();
-  const [bugs, setBugs] = React.useState([]);
+  const [bugs, setBugs] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [date, setDate] = useState({
+    startDate: subDays(new Date(), 30),
+    endDate: new Date(),
+  });
+  const [loading, setLoading] = useState(false);
+
+  const toggle = () => {
+    setShowModal(!showModal);
+  };
 
   const columns = [
     {
@@ -45,7 +60,7 @@ function BugPage() {
             <span className='block'>
               {format(new Date(row.value), "do MMM, yyyy")}
             </span>
-            <span className="text-xs italic text-slate-400">
+            <span className='text-xs italic text-slate-400'>
               {formatDistance(subDays(new Date(row.value), 0), new Date(), {
                 addSuffix: true,
               })}
@@ -109,20 +124,60 @@ function BugPage() {
   ];
 
   useEffect(() => {
-    dispatch(saveAllBugs())
-      .then((res) => {
-        setBugs(res.data);
-      })
-      .catch((err) => {
-        console.log("here is the error", err);
-      });
-  }, []);
+    const { startDate, endDate } = date;
+    console.log("hello");
+    if (startDate && endDate) {
+      const Obj = {
+        startDate: format(startDate, "yyyy-MM-dd"),
+        endDate: format(endDate, "yyyy-MM-dd"),
+      };
+      setLoading(true);
+      bugServices
+        .getFilteredBugs(Obj)
+        .then((res) => {
+          setBugs(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }
+  }, [date, dispatch]);
 
+  const getDate = (value) => {
+    setDate(value);
+  };
   return (
     <div className='mx-4 text-sm'>
       <h1 className='text-4xl text-slate-700 py-3'>Recent Bugs</h1>
-      <Table columns={columns} data={bugs} pagination={true} />
-      {/* {bugs.data} */}
+      <div className='relative'>
+        <div className='lg:absolute right-0 top-4'>
+          <div className='flex gap-x-4 flex-row z-50'>
+            <ReactDatePicker
+              startDate={date?.startDate}
+              endDate={date?.endDate}
+              getDate={getDate}
+            />
+            <Button
+              color='lightBlue'
+              buttonType='filled'
+              size='regular'
+              rounded={false}
+              block={false}
+              iconOnly={false}
+              ripple='light'
+              onClick={toggle}
+            >
+              Add Bug
+            </Button>
+          </div>
+        </div>
+        {!loading && <Table columns={columns} data={bugs} pagination={true} />}
+      </div>
+      <div className='flex flex-row items-center justify-center py-4'>
+        {loading && <Spinner />}
+      </div>
     </div>
   );
 }
