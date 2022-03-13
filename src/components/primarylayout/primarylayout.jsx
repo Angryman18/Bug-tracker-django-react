@@ -44,7 +44,7 @@ const PrimaryLayout = () => {
           Dashboard
         </NavLink>
         <NavLink
-          to='/bug'
+          to='/bug-traced'
           onClick={() => setSidebarOpen(false)}
           className={({ isActive }) =>
             isActive ? "element active" : "element"

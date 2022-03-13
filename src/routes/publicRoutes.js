@@ -7,6 +7,7 @@ import BugPage from "../pages/bug/bug.js";
 import Features from "../pages/feature/feature.js";
 import Projects from "../pages/projects/projects.js";
 import UsersList from "../pages/users/users.js";
+import Dashboard from "../pages/dashboard/dashboard.js";
 
 const PublicRoutes = () => {
   const routes = [
@@ -15,7 +16,7 @@ const PublicRoutes = () => {
       element: <PrimaryLayout />,
       children: [
         {
-          path: "/bug",
+          path: "/bug-traced",
           element: <BugPage />,
         },
         {
@@ -23,13 +24,17 @@ const PublicRoutes = () => {
           element: <UsersList />,
         },
         {
-          path: "/bug",
+          path: "/projects",
           element: <Projects />,
         },
         {
           path: "/feature-request",
           element: <Features />,
         },
+        {
+          path: "/dashboard",
+          element: <Dashboard />,
+        }
       ],
     },
   ];
