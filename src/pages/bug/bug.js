@@ -135,7 +135,7 @@ function BugPage() {
       bugServices
         .getFilteredBugs(Obj)
         .then((res) => {
-          setBugs(res.data);
+          setBugs(res?.data);
           setLoading(false);
         })
         .catch((err) => {
@@ -173,7 +173,7 @@ function BugPage() {
             </Button>
           </div>
         </div>
-        {!loading && <Table columns={columns} data={bugs} pagination={true} />}
+        {!loading && <Table columns={columns} data={bugs ?? []} pagination={true} />}
       </div>
       <div className='flex flex-row items-center justify-center py-4'>
         {loading && <Spinner />}

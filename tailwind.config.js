@@ -22,8 +22,10 @@ module.exports = {
         "topBar": "#d1fae5"
       },
       spacing: {
+        '104': '26rem',
         '128': '32rem',
         '160': '40rem',
+        
       }
     },
   },

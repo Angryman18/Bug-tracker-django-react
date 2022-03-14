@@ -8,16 +8,13 @@ const getFromLocalStorage = () => {
   return JSON.parse(getItem) ?? {};
 };
 
-// change the reducer file only
-const getInitialState = {
-  BugReducer: getFromLocalStorage().BugReducer,
-  FeatureReducer: getFromLocalStorage().FeatureReducer,
-};
+const initialState = getFromLocalStorage();
+const middleware = [thunk]
 
 const store = createStore(
   rootReducer,
-  getInitialState,
-  composeWithDevTools(applyMiddleware(thunk))
+  initialState,
+  composeWithDevTools(applyMiddleware(...middleware))
 );
 
 const saveCurrentState = () => {
@@ -27,5 +24,7 @@ const saveCurrentState = () => {
 store.subscribe(() => {
   saveCurrentState();
 });
+
+// unsubscribe();
 
 export default store;
