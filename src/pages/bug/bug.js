@@ -125,7 +125,6 @@ function BugPage() {
 
   useEffect(() => {
     const { startDate, endDate } = date;
-    console.log("hello");
     if (startDate && endDate) {
       const Obj = {
         startDate: format(startDate, "yyyy-MM-dd"),

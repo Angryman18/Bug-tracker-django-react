@@ -3,10 +3,12 @@ import axios from "axios";
 const instance = axios.create();
 
 const getAuthToken = localStorage.getItem("state");
-const { access } =
-  JSON.parse(getAuthToken)?.AuthReducer?.user?.user?.token;
+const token = JSON.parse(getAuthToken)?.AuthReducer?.user?.user?.token;
 
-
-instance.defaults.headers.common["Authorization"] = `Bearer ${access}`;
+if (token) {
+  instance.defaults.headers.common["Authorization"] = `Bearer${" "}${
+    token?.access ?? ""
+  }`;
+}
 
 export default instance;

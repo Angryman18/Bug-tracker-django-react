@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button, ClosingAlert } from "@material-tailwind/react";
 import { useNavigate, Link } from "react-router-dom";
 import { connect } from "react-redux";
+import jwt_decode from "jwt-decode";
 
 // files
 import Background from "../../images/background.jpg";
@@ -11,7 +12,7 @@ import Background from "../../images/background.jpg";
 import DefaultInput from "../../components/input/input";
 
 // actions
-import { UserLogin } from "../../actions/auth.action";
+import { UserLogin, GetLoggedInUserInfo } from "../../actions/auth.action";
 
 const initialState = {
   username: "",
@@ -55,7 +56,11 @@ const LoginPage = (props) => {
     setLoading(true);
     dispatch(UserLogin(formData))
       .then((res) => {
-        Navigate("/dashboard");
+        const { user_id } = jwt_decode(res?.access);
+        dispatch(GetLoggedInUserInfo(user_id, res)).then(() => {
+          // Navigate("/dashboard");
+          window.location.reload()
+        });
       })
       .catch((err) => {
         setMsg({ status: true, msg: err.message });
