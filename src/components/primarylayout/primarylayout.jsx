@@ -2,16 +2,24 @@
 import React, { useState } from "react";
 import { AiFillHome, AiFillBug } from "react-icons/ai";
 import { BsFillPeopleFill, BsFillGridFill } from "react-icons/bs";
-import { BiUserCircle, BiMenu } from "react-icons/bi";
+import { BiUserCircle, BiMenu, BiLogOutCircle } from "react-icons/bi";
 import { Outlet } from "react-router-dom";
 import { NavLink, Link } from "react-router-dom";
 import "./layout.css";
+import { useDispatch } from "react-redux";
+import { LOGOUT } from "../../actions/types";
 
 const PrimaryLayout = () => {
+  const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toggle = (e) => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  const logoutHandler = () => {
+    dispatch({ type: LOGOUT });
+  };
+
   return (
     <div className='md:flex relative h-screen'>
       <div className='w-full flex justify-between items-center px-3 h-12 md:hidden bg-sideBarBg border-b border-sideBarBorder shadow-sm'>
@@ -73,6 +81,10 @@ const PrimaryLayout = () => {
           <BsFillGridFill className='text-lg' />
           Feature Request
         </NavLink>
+        <a onClick={logoutHandler} className='element absolute bottom-2'>
+          <BiLogOutCircle className='text-lg' />
+          Logout
+        </a>
       </div>
       {/* content */}
       <div className='flex-1 overflow-hidden z-10'>

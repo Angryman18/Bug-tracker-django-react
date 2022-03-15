@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const BASE_URL = process.env.BASE_URL;
-
 const AUTH_LOGIN = BASE_URL + "user/login";
 
 class AuthService {
