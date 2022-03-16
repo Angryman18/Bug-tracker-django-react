@@ -4,6 +4,7 @@ import React from "react";
 // sub components
 import ModalHeader from "./ModalHeader.jsx";
 import ModalFooter from "./ModalFooter.jsx";
+import { ReactDOM } from "react";
 
 import "./Modal.css";
 
@@ -11,9 +12,9 @@ const Modal = ({ size, showModal, toggle, children }) => {
   let className;
   if (size === "sm") {
     className = "base-modal modal-sm";
-  } else if ((size = "md")) {
+  } else if (size === "md") {
     className = "base-modal modal-md";
-  } else if ((size = "lg")) {
+  } else if (size === "lg") {
     className = "base-modal modal-lg";
   } else {
     className = "modal-sm";

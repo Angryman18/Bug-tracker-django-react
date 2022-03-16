@@ -18,6 +18,7 @@ import ModalHeader from "../../components/modal/ModalHeader.jsx";
 import ModalFooter from "../../components/modal/ModalFooter.jsx";
 import Spinner from "../../components/spinner/spinner.jsx";
 import ReactDatePicker from "../../components/datepicker/datepicker.jsx";
+import ProfileView from "./profile-view.js";
 
 function BugPage() {
   const dispatch = useDispatch();
@@ -90,6 +91,9 @@ function BugPage() {
       Header: "Reported By",
       accessor: "reportedBy.username",
       width: 100,
+      Cell: row => {
+        return <p onClick={toggle} className='underline text-blue-500 cursor-pointer'>{row.value}</p>
+      }
     },
     {
       Header: "Message",
@@ -138,9 +142,8 @@ function BugPage() {
           setLoading(false);
         })
         .catch((err) => {
-          console.log(err);
           setLoading(false);
-        });
+        })
     }
   }, [date, dispatch]);
 
@@ -177,6 +180,7 @@ function BugPage() {
       <div className='flex flex-row items-center justify-center py-4'>
         {loading && <Spinner />}
       </div>
+      <ProfileView showModal={showModal} toggle={toggle} />
     </div>
   );
 }

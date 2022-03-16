@@ -1,4 +1,4 @@
-import axios from "../axios";
+import axios from "./axios.service";
 
 const BASE_URL = process.env.BASE_URL;
 
@@ -22,9 +22,9 @@ class BugService {
           "Content-Type": "application/json",
         },
       });
-      return response;
+      return Promise.resolve(response);
     } catch (err) {
-      return err.response;
+      return Promise.reject(err.response);
     }
   }
 }

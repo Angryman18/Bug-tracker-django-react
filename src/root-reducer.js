@@ -9,7 +9,7 @@ const Reducer = combineReducers({
   AuthReducer,
 });
 
-export const rootReducer = (state, action) => {
+const rootReducer = (state, action) => {
   if (action.type === "LOGOUT") {
     return {};
   }

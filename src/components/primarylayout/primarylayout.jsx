@@ -87,7 +87,7 @@ const PrimaryLayout = () => {
         </a>
       </div>
       {/* content */}
-      <div className='flex-1 overflow-hidden z-10'>
+      <div className='flex-1 overflow-hidden'>
         <Outlet />
       </div>
     </div>
