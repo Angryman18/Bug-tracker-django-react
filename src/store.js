@@ -2,11 +2,10 @@ import { createStore, applyMiddleware, compose } from "redux";
 import rootReducer from "./root-reducer";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
-import { LOGOUT } from "./actions/types";
 
 const getFromLocalStorage = () => {
   const getItem = localStorage.getItem("state");
-  return JSON.parse(getItem) ?? {};
+  return JSON.parse(getItem) ?? undefined;
 };
 
 let initialState = getFromLocalStorage();

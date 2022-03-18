@@ -3,9 +3,10 @@ import axios from "axios";
 const instance = axios.create();
 
 const getAuthToken = localStorage.getItem("state");
-const getToken = JSON.parse(getAuthToken)?.AuthReducer?.user?.user?.token;
-
-console.log('custom axios is running')
+const getToken =
+  getAuthToken !== undefined
+    ? JSON.parse(getAuthToken)?.AuthReducer?.user?.user?.token
+    : undefined;
 
 if (getToken) {
   instance.defaults.headers.common[

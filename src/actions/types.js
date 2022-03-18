@@ -5,3 +5,5 @@ export const GET_USER_INFO = "GET_USER_INFO";
 export const LOGOUT = "LOGOUT";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAIL = "SIGNUP_FAIL";
+export const GET_ALL_PROJECT = 'GET_ALL_PROJECT';
+export const GET_ALL_PROJECT_FAIL = 'GET_ALL_PROJECT_FAIL';

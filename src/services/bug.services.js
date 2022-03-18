@@ -1,14 +1,15 @@
-import axios from "./axios.service";
+import customAxios from "./axios.service";
 
-const BASE_URL = process.env.BASE_URL;
-
-const GET_BUGS_URL = BASE_URL + "bugs";
-const FILTER_BUG_DATEWISE = BASE_URL + "filterBugDateRange";
+import {
+  GET_BUGS_URL,
+  FILTER_BUG_DATEWISE,
+  ADD_BUG_URL,
+} from "./api-endpoints";
 
 class BugService {
   async getAllBugs() {
     try {
-      const response = await axios.get(GET_BUGS_URL);
+      const response = await customAxios.get(GET_BUGS_URL);
       return response;
     } catch (err) {
       return err.response;
@@ -17,12 +18,25 @@ class BugService {
 
   async getFilteredBugs(Obj) {
     try {
-      const response = await axios.post(FILTER_BUG_DATEWISE, Obj, {
+      const response = await customAxios.post(FILTER_BUG_DATEWISE, Obj, {
         headers: {
           "Content-Type": "application/json",
         },
       });
       return Promise.resolve(response);
+    } catch (err) {
+      return Promise.reject(err.response);
+    }
+  }
+
+  async addBug(Obj) {
+    try {
+      const response = await customAxios.post(ADD_BUG_URL, Obj, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
     } catch (err) {
       return Promise.reject(err.response);
     }

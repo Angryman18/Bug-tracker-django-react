@@ -19,7 +19,11 @@ module.exports = {
         "deepSky": "#0284c7",
         "lightSlate": "#e2e8f0",
         "deepSlate": '#475569',
-        "topBar": "#d1fae5"
+        "topBar": "#d1fae5",
+        "link": '#3b82f6',
+        "cardBorder": "#5087af",
+        "cardbg": "#f3f7f8",
+        "disbaledText": "#94a3b8"
       },
       spacing: {
         '104': '26rem',
@@ -27,6 +31,10 @@ module.exports = {
         '160': '40rem',
         '150vw': '500rem'
         
+      },
+      zIndex: {
+        '60': '60',
+        '70': '70',
       }
     },
   },

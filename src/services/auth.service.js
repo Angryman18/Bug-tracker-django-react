@@ -1,8 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = process.env.BASE_URL;
-const AUTH_LOGIN = BASE_URL + "user/login";
-const AUTH_SIGNUP = BASE_URL + "user/signup";
+import { AUTH_LOGIN, AUTH_SIGNUP } from "./api-endpoints";
 
 class AuthService {
   async Login(Obj) {
