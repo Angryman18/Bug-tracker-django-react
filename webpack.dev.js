@@ -57,6 +57,9 @@ module.exports = {
     //   swDest: "sw.js",
     // }),
   ],
+  watchOptions: {
+    ignored: /node_modules/,
+  },
   devServer: {
     port: 8080,
     client: {

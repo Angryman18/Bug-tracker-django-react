@@ -58,7 +58,7 @@ const Table = ({ columns, data, pagination }) => {
           setGlobalFilter={setGlobalFilter}
         />
       </div>
-      <div className="w-full overflow-x-auto">
+      <div className="w-full overflow-x-auto overflow-y-hidden">
       <table className="w-full" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (

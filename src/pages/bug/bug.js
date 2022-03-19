@@ -1,54 +1,95 @@
 // vendors
 import React, { useEffect, useState } from "react";
-import Table from "../../components/table/table.jsx";
-import { useSelector, useDispatch } from "react-redux";
-import { Button, Label } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import formatDistance from "date-fns/formatDistance";
-import { addDays, subDays, format } from "date-fns";
+import { subDays, format } from "date-fns";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 // actions
-
+import { retrieveAllProject } from "../../actions/project.action.js";
+import { filterAllBugs } from "../../actions/bugs.action.js";
 
 // services
 import bugServices from "../../services/bug.services.js";
+import userService from "../../services/user.service.js";
 
 // components
-import Modal from "../../components/modal/Modal.jsx";
-import ModalHeader from "../../components/modal/ModalHeader.jsx";
-import ModalFooter from "../../components/modal/ModalFooter.jsx";
+import Table from "../../components/table/table.jsx";
+import AddBugModal from "./addbug-modal.js";
 import Spinner from "../../components/spinner/spinner.jsx";
 import ReactDatePicker from "../../components/datepicker/datepicker.jsx";
+import ProfileView from "./profile-view.js";
+import Loader from "../../components/spinner/loader.jsx";
+import BugDetails from "./bug-details.js";
 
-function BugPage() {
-  const dispatch = useDispatch();
-  const [bugs, setBugs] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+function BugPage(props) {
+  const { dispatch, projects, bugs } = props;
+  // const [bugs, setBugs] = useState([]);
+  const [updatelist, setUpdatelist] = useState(false);
+  const [displayProfile, setDisplayProfile] = useState(false);
+  const [displayAddBug, setDisplayAddBug] = useState(false);
   const [date, setDate] = useState({
     startDate: subDays(new Date(), 30),
     endDate: new Date(),
   });
   const [loading, setLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+  const [moutedData, setMoutedData] = useState({ mount: false, data: {} });
 
-  const toggle = () => {
-    setShowModal(!showModal);
+  const toggleBugDetails = () => {
+    setMoutedData({ ...moutedData, mount: !moutedData.mount });
+  };
+
+  const profileToggle = () => {
+    setDisplayProfile(!displayProfile);
+  };
+
+  const addBugToggle = () => {
+    setDisplayAddBug(!displayAddBug);
+  };
+
+  const forceRefresh = () => {
+    setUpdatelist(!updatelist);
+  };
+
+  const mountAndToggle = (e, value) => {
+    setLoading(true);
+    userService
+      .getUserDetails({ username: value })
+      .then((response) => {
+        setUserInfo(response);
+        profileToggle();
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+  };
+
+  const mountBugObjectView = (e, value) => {
+    setMoutedData({ mount: true, data: value });
   };
 
   const columns = [
     {
       Header: "Title",
       accessor: "title",
+      Cell: (row) => {
+        return (
+          <p
+            className='text-link cursor-pointer hover:underline'
+            onClick={(e) => mountBugObjectView(e, row.row.original)}
+          >
+            {row.value}
+          </p>
+        );
+      },
     },
     {
       Header: "Project",
       accessor: "project.projectName",
-    },
-    {
-      Header: "Desc",
-      accessor: "description",
-      Cell: (row) => {
-        return row.value.slice(0, 50);
-      },
-      width: 150,
     },
     {
       Header: "Report Date",
@@ -90,6 +131,16 @@ function BugPage() {
       Header: "Reported By",
       accessor: "reportedBy.username",
       width: 100,
+      Cell: (row) => {
+        return (
+          <p
+            onClick={(e) => mountAndToggle(e, row.value)}
+            className='underline text-blue-500 cursor-pointer'
+          >
+            {row.value}
+          </p>
+        );
+      },
     },
     {
       Header: "Message",
@@ -131,54 +182,93 @@ function BugPage() {
         endDate: format(endDate, "yyyy-MM-dd"),
       };
       setLoading(true);
-      bugServices
-        .getFilteredBugs(Obj)
+      dispatch(filterAllBugs(Obj))
         .then((res) => {
-          setBugs(res?.data);
           setLoading(false);
         })
         .catch((err) => {
           console.log(err);
-          setLoading(false);
         });
+      // bugServices
+      //   .getFilteredBugs(Obj)
+      //   .then((res) => {
+      //     setBugs(res?.data);
+      //   })
+      //   .then(() => {
+      //     setLoading(false);
+      //   })
+      //   .catch((err) => {
+      //     setLoading(false);
+      //   });
     }
-  }, [date, dispatch]);
+  }, [date, dispatch, updatelist]);
 
   const getDate = (value) => {
     setDate(value);
   };
+
+  const tableContent = (
+    <div className='relative mt-4'>
+      <div className='lg:absolute right-0 top-4'>
+        <div className='flex gap-x-4 flex-row z-50'>
+          <ReactDatePicker
+            startDate={date?.startDate}
+            endDate={date?.endDate}
+            getDate={getDate}
+          />
+          <Button
+            color='lightBlue'
+            buttonType='filled'
+            size='regular'
+            rounded={false}
+            block={false}
+            iconOnly={false}
+            ripple='light'
+            onClick={addBugToggle}
+          >
+            Add Bug
+          </Button>
+        </div>
+      </div>
+      {<Table columns={columns} data={bugs ?? []} pagination={true} />}
+    </div>
+  );
+
   return (
     <div className='mx-4 text-sm'>
-      <h1 className='text-4xl text-slate-700 py-3'>Recent Bugs</h1>
-      <div className='relative'>
-        <div className='lg:absolute right-0 top-4'>
-          <div className='flex gap-x-4 flex-row z-50'>
-            <ReactDatePicker
-              startDate={date?.startDate}
-              endDate={date?.endDate}
-              getDate={getDate}
-            />
-            <Button
-              color='lightBlue'
-              buttonType='filled'
-              size='regular'
-              rounded={false}
-              block={false}
-              iconOnly={false}
-              ripple='light'
-              onClick={toggle}
-            >
-              Add Bug
-            </Button>
-          </div>
-        </div>
-        {!loading && <Table columns={columns} data={bugs ?? []} pagination={true} />}
-      </div>
-      <div className='flex flex-row items-center justify-center py-4'>
-        {loading && <Spinner />}
-      </div>
+      {loading && <Loader />}
+      {!moutedData.mount ? (
+        tableContent
+      ) : (
+        <BugDetails
+          toggle={toggleBugDetails}
+          data={moutedData?.data}
+          profileToggle={profileToggle}
+          mountAndToggle={mountAndToggle}
+        />
+      )}
+      <ProfileView
+        showModal={displayProfile}
+        toggle={profileToggle}
+        profileObj={userInfo}
+      />
+      <AddBugModal
+        showModal={displayAddBug}
+        toggle={addBugToggle}
+        projects={projects}
+        forceRefresh={forceRefresh}
+      />
     </div>
   );
 }
 
-export default BugPage;
+const mapStateToProps = (state) => {
+  const projects = state?.ProjectReducer?.data;
+  const bugs = state?.BugReducer?.data;
+  return {
+    projects,
+    bugs: bugs ?? [],
+  };
+};
+
+export default connect(mapStateToProps)(BugPage);

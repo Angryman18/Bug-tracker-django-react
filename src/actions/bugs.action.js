@@ -16,8 +16,8 @@ const saveAllBugs = () => (dispatch) => {
 const filterAllBugs = (Obj) => (dispatch) => {
   return BugService.getFilteredBugs(Obj)
     .then((res) => {
-      dispatch({ type: GET_BUGS, payload: res });
-      return res;
+      dispatch({ type: GET_BUGS, payload: res.data });
+      return res.data;
     })
     .catch((err) => {
       console.log(err);

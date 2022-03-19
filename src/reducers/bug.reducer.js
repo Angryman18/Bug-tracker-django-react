@@ -5,7 +5,7 @@ const initialState = {};
 const BugReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_BUGS:
-      return { ...state, data: action.payload };
+      return { data: action.payload };
     default:
       return state;
   }

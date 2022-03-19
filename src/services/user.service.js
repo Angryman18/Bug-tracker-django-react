@@ -1,8 +1,7 @@
 import axios from "axios";
+import customAxios from "./axios.service";
 
-const BASE_URL = process.env.BASE_URL;
-
-const GET_USER_INFO = BASE_URL + "findUser";
+import { GET_USER_INFO, GET_USER_DETAILS } from "./api-endpoints";
 
 class UserService {
   async getUserInfo(Obj) {
@@ -15,6 +14,19 @@ class UserService {
       return respone.data;
     } catch (err) {
       return err.respone;
+    }
+  }
+
+  async getUserDetails(Obj) {
+    try {
+      const response = await customAxios.post(GET_USER_DETAILS, Obj, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return Promise.reject(err.response);
     }
   }
 }

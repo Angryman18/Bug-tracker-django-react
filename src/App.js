@@ -20,7 +20,7 @@ import PublicRoutes from "./routes/publicRoutes.js";
 const App = (props) => {
   const { isLoggedIn, user } = props;
   const dispatch = useDispatch();
-
+  console.log(isLoggedIn)
   // const ref = useRef(() => {
   //   if (user?.user?.id && user?.user?.token) {
   //     dispatch(GetLoggedInUserInfo(user?.user?.id, user?.user?.token))
@@ -57,7 +57,7 @@ const App = (props) => {
           <Route
             path='signup'
             element={
-              <PublicRoutes Component={LoginPage} isLoggedIn={SignupPage} />
+              <PublicRoutes Component={SignupPage} isLoggedIn={isLoggedIn} />
             }
           />
           {!isLoggedIn && <Route path='/*' element={<Navigate to='/' />} />}

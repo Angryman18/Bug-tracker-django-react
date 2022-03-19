@@ -1,12 +1,22 @@
 import BugReducer from "./reducers/bug.reducer";
 import FeatureReducer from "./reducers/feature.reducer";
 import AuthReducer from "./reducers/auth.reducer";
+import ProjectReducer from "./reducers/project.reducer";
 import { combineReducers } from "redux";
+import { LOGOUT } from "./actions/types";
 
-const rootReducer = combineReducers({
+const Reducer = combineReducers({
   BugReducer,
   FeatureReducer,
   AuthReducer,
+  ProjectReducer,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === LOGOUT ) {
+    return {}
+  }
+  return Reducer(state, action);
+};
 
 export default rootReducer;

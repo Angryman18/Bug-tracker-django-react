@@ -5,11 +5,11 @@ import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 
 const getFromLocalStorage = () => {
   const getItem = localStorage.getItem("state");
-  return JSON.parse(getItem) ?? {};
+  return JSON.parse(getItem) ?? undefined;
 };
 
-const initialState = getFromLocalStorage();
-const middleware = [thunk]
+let initialState = getFromLocalStorage();
+const middleware = [thunk];
 
 const store = createStore(
   rootReducer,
