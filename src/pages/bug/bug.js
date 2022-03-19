@@ -22,6 +22,7 @@ import ReactDatePicker from "../../components/datepicker/datepicker.jsx";
 import ProfileView from "./profile-view.js";
 import Loader from "../../components/spinner/loader.jsx";
 import BugDetails from "./bug-details.js";
+import SingleProject from "../projects/single-project.js";
 
 function BugPage(props) {
   const { dispatch, projects, bugs } = props;
@@ -36,10 +37,18 @@ function BugPage(props) {
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [moutedData, setMoutedData] = useState({ mount: false, data: {} });
+  const [mountedProjectData, setMountedProjectData] = useState({
+    mount: false,
+    data: {},
+  });
 
   const toggleBugDetails = () => {
     setMoutedData({ ...moutedData, mount: !moutedData.mount });
   };
+
+  const toggleProjectDetails = () => {
+    setMountedProjectData({...mountedProjectData, mount: !mountedProjectData.mount})
+  }
 
   const profileToggle = () => {
     setDisplayProfile(!displayProfile);
@@ -72,6 +81,10 @@ function BugPage(props) {
     setMoutedData({ mount: true, data: value });
   };
 
+  const mountProjectObejctView = (e, value) => {
+    setMountedProjectData({ mount: true, data: value });
+  };
+
   const columns = [
     {
       Header: "Title",
@@ -90,6 +103,16 @@ function BugPage(props) {
     {
       Header: "Project",
       accessor: "project.projectName",
+      Cell: (row) => {
+        return (
+          <p
+            className='text-link cursor-pointer hover:underline'
+            onClick={(e) => mountProjectObejctView(e, row.row.original)}
+          >
+            {row.value}
+          </p>
+        );
+      },
     },
     {
       Header: "Report Date",
@@ -237,16 +260,30 @@ function BugPage(props) {
   return (
     <div className='mx-4 text-sm'>
       {loading && <Loader />}
-      {!moutedData.mount ? (
+      {/* {!moutedData.mount ? !mountedProjectData.mount ? (
         tableContent
-      ) : (
+      ) : !moutedData.mount ? (
         <BugDetails
           toggle={toggleBugDetails}
           data={moutedData?.data}
           profileToggle={profileToggle}
           mountAndToggle={mountAndToggle}
         />
-      )}
+      )} */}
+
+      {moutedData.mount && !mountedProjectData.mount ? (
+        <BugDetails
+          toggle={toggleBugDetails}
+          data={moutedData?.data}
+          profileToggle={profileToggle}
+          mountAndToggle={mountAndToggle}
+        />
+      ) : !moutedData.mount && mountedProjectData.mount ? (
+        <SingleProject toggle={toggleProjectDetails} />
+      ) : !moutedData.mount && !mountedProjectData.mount ? (
+        tableContent
+      ) : null}
+
       <ProfileView
         showModal={displayProfile}
         toggle={profileToggle}

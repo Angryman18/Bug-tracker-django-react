@@ -11,7 +11,6 @@ import format from "date-fns/format";
 const ProfileView = ({ showModal, toggle, profileObj }) => {
   const {formatDate} = useDateFormat()
   const {user} = profileObj
-  console.log(profileObj)
   return (
     <div className='w-fullwidth'>
       <Modal size='md' toggle={toggle} showModal={showModal}>
