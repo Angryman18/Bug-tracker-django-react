@@ -1,7 +1,7 @@
 import React from "react";
-import Modal from "../../components/modal/Modal";
-import ModalFooter from "../../components/modal/ModalFooter";
-import ModalHeader from "../../components/modal/ModalHeader";
+import Modal from "../../components/modal/Modal.jsx";
+import ModalFooter from "../../components/modal/ModalFooter.jsx";
+import ModalHeader from "../../components/modal/ModalHeader.jsx";
 import profile from "../../images/profile.png";
 import useDateFormat from "../../hooks/useFormat";
 
