@@ -24,7 +24,7 @@ const BugDetails = ({ toggle, data, profileToggle, mountAndToggle }) => {
           block={false}
           iconOnly={false}
           ripple='dark'
-          className='h-10 px-0'
+          className='h-10'
           onClick={toggle}
         >
           <Icon name='keyboard_backspace' size='50' /> Back

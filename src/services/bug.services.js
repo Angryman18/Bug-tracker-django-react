@@ -4,6 +4,7 @@ import {
   GET_BUGS_URL,
   FILTER_BUG_DATEWISE,
   ADD_BUG_URL,
+  RECENT_BUGS,
 } from "./api-endpoints";
 
 class BugService {
@@ -32,6 +33,19 @@ class BugService {
   async addBug(Obj) {
     try {
       const response = await customAxios.post(ADD_BUG_URL, Obj, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return Promise.reject(err.response);
+    }
+  }
+
+  async recentBugs() {
+    try {
+      const response = await customAxios(RECENT_BUGS, {
         headers: {
           "Content-Type": "application/json",
         },

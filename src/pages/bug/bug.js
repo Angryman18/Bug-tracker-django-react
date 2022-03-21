@@ -47,8 +47,11 @@ function BugPage(props) {
   };
 
   const toggleProjectDetails = () => {
-    setMountedProjectData({...mountedProjectData, mount: !mountedProjectData.mount})
-  }
+    setMountedProjectData({
+      ...mountedProjectData,
+      mount: !mountedProjectData.mount,
+    });
+  };
 
   const profileToggle = () => {
     setDisplayProfile(!displayProfile);
@@ -60,6 +63,10 @@ function BugPage(props) {
 
   const forceRefresh = () => {
     setUpdatelist(!updatelist);
+  };
+
+  const forceLoading = (value) => {
+    setLoading(value);
   };
 
   const mountAndToggle = (e, value) => {
@@ -212,17 +219,6 @@ function BugPage(props) {
         .catch((err) => {
           console.log(err);
         });
-      // bugServices
-      //   .getFilteredBugs(Obj)
-      //   .then((res) => {
-      //     setBugs(res?.data);
-      //   })
-      //   .then(() => {
-      //     setLoading(false);
-      //   })
-      //   .catch((err) => {
-      //     setLoading(false);
-      //   });
     }
   }, [date, dispatch, updatelist]);
 
@@ -260,17 +256,6 @@ function BugPage(props) {
   return (
     <div className='mx-4 text-sm'>
       {loading && <Loader />}
-      {/* {!moutedData.mount ? !mountedProjectData.mount ? (
-        tableContent
-      ) : !moutedData.mount ? (
-        <BugDetails
-          toggle={toggleBugDetails}
-          data={moutedData?.data}
-          profileToggle={profileToggle}
-          mountAndToggle={mountAndToggle}
-        />
-      )} */}
-
       {moutedData.mount && !mountedProjectData.mount ? (
         <BugDetails
           toggle={toggleBugDetails}
@@ -279,7 +264,12 @@ function BugPage(props) {
           mountAndToggle={mountAndToggle}
         />
       ) : !moutedData.mount && mountedProjectData.mount ? (
-        <SingleProject toggle={toggleProjectDetails} />
+        <SingleProject
+          toggle={toggleProjectDetails}
+          projectObj={mountedProjectData.data}
+          forceRefresh={forceRefresh}
+          forceLoading={forceLoading}
+        />
       ) : !moutedData.mount && !mountedProjectData.mount ? (
         tableContent
       ) : null}
@@ -294,6 +284,7 @@ function BugPage(props) {
         toggle={addBugToggle}
         projects={projects}
         forceRefresh={forceRefresh}
+        forceLoading={forceLoading}
       />
     </div>
   );

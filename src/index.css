@@ -34,3 +34,7 @@
   width: 75px;
   @apply text-sm flex items-center justify-center text-deepSlate px-1 py-0.5 bg-lightSlate font-medium rounded-full;
 }
+
+.link {
+  @apply text-link hover:underline
+}

@@ -11,3 +11,4 @@ export const ADD_BUG_URL = BASE_URL + "addbug";
 export const GET_ALL_PROJECTS_URL = BASE_URL + "projects";
 export const GET_USER_INFO = BASE_URL + "findUser";
 export const GET_USER_DETAILS = BASE_URL + "getuserdetail";
+export const RECENT_BUGS = BASE_URL + "recent-bugs";

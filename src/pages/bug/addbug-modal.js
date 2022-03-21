@@ -1,5 +1,4 @@
 // vendors
-
 import React, { useEffect, useState } from "react";
 
 // components
@@ -8,6 +7,8 @@ import DefaultInput from "../../components/input/input.js";
 import SelectBox from "../../components/select/select.js";
 import DefaultTextArea from "../../components/textarea/textarea.js";
 import { Button } from "@material-tailwind/react";
+import Loader from "../../components/spinner/loader.jsx";
+
 
 // hooks
 import useFormValid from "../../hooks/useFormvalid.js";
@@ -29,9 +30,22 @@ const initialErrorState = {
   priority: false,
 };
 
-const AddBugModal = ({ toggle, showModal, projects, forceRefresh }) => {
-  const [formData, setFormData] = useState({ ...initialFormData });
-  const [error, setError] = useState({ ...initialErrorState });
+const AddBugModal = ({
+  toggle,
+  showModal,
+  projects,
+  forceRefresh,
+  forceLoading,
+  disableSelection,
+}) => {
+  const defaultFormObject = {
+    ...initialFormData,
+    project: disableSelection?.id ?? "",
+  };
+  const defaultErrorObject = { ...initialErrorState, project: false };
+
+  const [formData, setFormData] = useState({ ...defaultFormObject });
+  const [error, setError] = useState({ ...defaultErrorObject });
 
   const { checkFieldLength, blankCheck } = useFormValid();
 
@@ -41,9 +55,10 @@ const AddBugModal = ({ toggle, showModal, projects, forceRefresh }) => {
   };
 
   useEffect(() => {
-    setFormData({ ...initialFormData });
-    setError({ ...initialErrorState });
+    setFormData({ ...defaultFormObject });
+    setError({ ...defaultErrorObject });
   }, [showModal]);
+
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -53,16 +68,17 @@ const AddBugModal = ({ toggle, showModal, projects, forceRefresh }) => {
       !blankCheck(formData.project) &&
       !blankCheck(formData.priority)
     ) {
-      console.log({...formData, reportdate: new Date()})
+      forceLoading(true);
       bugServices
-        .addBug({...formData, reportdate: new Date()})
+        .addBug({ ...formData, reportdate: new Date() })
         .then((response) => {
-          console.log(response);
           toggle();
-          forceRefresh()
+          forceLoading(false)
+          forceRefresh();
         })
         .catch((err) => {
-          console.log(err)
+          console.log(err);
+          forceLoading(false)
         });
     } else {
       return setError({
@@ -102,8 +118,9 @@ const AddBugModal = ({ toggle, showModal, projects, forceRefresh }) => {
           name='project'
           value={formData.project}
           labelText='Project'
-          onChange={getAllInputValue}
+          onChange={!!disableSelection ? null : getAllInputValue}
           error={error.project}
+          disabled={!!disableSelection}
         >
           <option className='text-sideBarText' hidden>
             Select Project
@@ -160,6 +177,10 @@ const AddBugModal = ({ toggle, showModal, projects, forceRefresh }) => {
       </div>
     </Modal>
   );
+};
+
+AddBugModal.defaultProps = {
+  disableSelection: false,
 };
 
 export default AddBugModal;

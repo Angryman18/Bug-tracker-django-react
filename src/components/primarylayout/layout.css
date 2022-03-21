@@ -2,9 +2,9 @@
 
 
 .element {
-    @apply h-12 w-full flex justify-start items-center p-2 pl-3 text-gray-600 hover:bg-sideBarBorder duration-200 hover:pl-4 hover:text-sky-600 cursor-pointer gap-x-2 overflow-hidden
+    @apply h-12 w-full flex justify-start items-center p-2 pl-3 text-gray-600 hover:bg-blue-400 duration-200 hover:pl-4 hover:text-sky-100 cursor-pointer gap-x-2 overflow-hidden
 }
 
 .active {
-    @apply bg-sideBarBorder pl-4 text-sky-600
+    @apply bg-blue-400 pl-4 text-white
 }
