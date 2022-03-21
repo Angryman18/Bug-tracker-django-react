@@ -11,6 +11,7 @@ import Dashboard from "../pages/dashboard/dashboard.js";
 import LoginPage from "../pages/login/login.js";
 import SignupPage from "../pages/signup/signup.js";
 import BugDetails from "../pages/bug/bug-details.js";
+import ManagePage from "../pages/manage/manage.js";
 
 
 const PrivateRoutes = () => {
@@ -42,6 +43,10 @@ const PrivateRoutes = () => {
         {
           path: "/bug-details/:id",
           element: <BugDetails />,
+        },
+        {
+          path: '/manage',
+          element: <ManagePage />,
         }
       ],
     },

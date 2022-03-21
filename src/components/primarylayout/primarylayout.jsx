@@ -1,6 +1,6 @@
 // vendors
 import React, { useState } from "react";
-import { AiFillHome, AiFillBug } from "react-icons/ai";
+import { AiFillHome, AiFillBug, AiTwotoneSliders, AiTwotoneGold } from "react-icons/ai";
 import { BsFillPeopleFill, BsFillGridFill } from "react-icons/bs";
 import { BiUserCircle, BiMenu, BiLogOutCircle } from "react-icons/bi";
 import { Outlet } from "react-router-dom";
@@ -53,6 +53,16 @@ const PrimaryLayout = () => {
           Dashboard
         </NavLink>
         <NavLink
+          to='/manage'
+          onClick={() => setSidebarOpen(false)}
+          className={({ isActive }) =>
+            isActive ? "element active" : "element"
+          }
+        >
+          <AiTwotoneSliders className='text-lg' />
+          Manage
+        </NavLink>
+        <NavLink
           to='/bug-traced'
           onClick={() => setSidebarOpen(false)}
           className={({ isActive }) =>
@@ -61,6 +71,16 @@ const PrimaryLayout = () => {
         >
           <AiFillBug className='text-lg' />
           Bug Traced
+        </NavLink>
+        <NavLink
+          to='/projects'
+          onClick={() => setSidebarOpen(false)}
+          className={({ isActive }) =>
+            isActive ? "element active" : "element"
+          }
+        >
+          <AiTwotoneGold className='text-lg' />
+          Projects
         </NavLink>
         <NavLink
           to='/users'
