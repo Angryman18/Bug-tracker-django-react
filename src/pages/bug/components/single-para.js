@@ -1,6 +1,6 @@
 import React from "react";
 
-const SinglePara = ({ fieldName, value, onClick }) => {
+const SinglePara = ({ fieldName, value, onClick, nolink }) => {
   return (
     <li className='py-0.5'>
       {fieldName}
@@ -8,7 +8,7 @@ const SinglePara = ({ fieldName, value, onClick }) => {
       <span
         className={`${
           value
-            ? "cursor-pointer text-link hover:underline"
+            ? `${!nolink ? 'text-link hover:underline cursor-pointer' : 'text-sideBarText'}`
             : "text-disbaledText pointer-events-none italic"
         } `}
         onClick={onClick}

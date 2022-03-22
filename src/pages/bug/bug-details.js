@@ -4,14 +4,19 @@ import { Button, Icon } from "@material-tailwind/react";
 import useDateFormat from "../../hooks/useFormat";
 import SinglePara from "./components/single-para";
 
+// 
+import ProfileView from "./profile-view";
+
 const BugDetails = ({ toggle, data, profileToggle, mountAndToggle }) => {
   const { formatDate } = useDateFormat();
   const { reportedBy, project } = data;
 
   const openProfileModal = (e) => {
-    profileToggle()
+    // profileToggle()
     mountAndToggle(e, reportedBy.username);
   }
+
+
 
   return (
     <div className='sm:mx-4 mx-0.5 text-sm'>
@@ -30,7 +35,7 @@ const BugDetails = ({ toggle, data, profileToggle, mountAndToggle }) => {
           <Icon name='keyboard_backspace' size='50' /> Back
         </Button>
         <p className='text-sm text-sideBarText py-2'>
-          {formatDate(data?.reportDate)}
+          {formatDate(data?.reportDate ?? new Date())}
         </p>
         <div className='border-l-8 border-cardBorder bg-cardbg'>
           <div className='px-6 py-4'>
@@ -44,6 +49,7 @@ const BugDetails = ({ toggle, data, profileToggle, mountAndToggle }) => {
               <SinglePara
                 fieldName='Project Title'
                 value={project?.projectName}
+                nolink={true}
               />
               <SinglePara
                 fieldName='Project Link'
@@ -62,5 +68,6 @@ const BugDetails = ({ toggle, data, profileToggle, mountAndToggle }) => {
     </div>
   );
 };
+
 
 export default BugDetails;

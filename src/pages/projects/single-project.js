@@ -1,22 +1,37 @@
 // vendors
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Button, Icon } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
 
 // components
 import AddBugModal from "../bug/addbug-modal";
 import Spinner from "../../components/spinner/spinner";
+import BugDetails from "../bug/bug-details";
+import ProfileView from "../bug/profile-view";
 
 // utils
 import useDateFormat from "../../hooks/useFormat";
+
+// services
 import bugServices from "../../services/bug.services";
+import userService from "../../services/user.service";
+import Loader from "../../components/spinner/loader";
 
 // services
 
 const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
   const [showAddBugModal, setAddBugModal] = useState(false);
+
+  const [showBugDetails, setShowBugDetails] = useState({
+    show: false,
+    data: {},
+  });
+
+  const [showProfile, setShowProfile] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+
   const { formatDate, formatText } = useDateFormat();
   const [loading, setLoading] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(false)
   const [recentData, setRecentData] = useState({ bugs: [] });
 
   const { project, reportedBy } = projectObj;
@@ -25,7 +40,7 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
     setAddBugModal(!showAddBugModal);
   };
 
-  useEffect(() => {
+  const getRecentData = useCallback(() => {
     setLoading(true);
     bugServices
       .recentBugs()
@@ -38,9 +53,40 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
       .finally(() => {
         setLoading(false);
       });
+  }, [recentData]);
+
+  useEffect(() => {
+    getRecentData();
   }, []);
 
-  console.log(recentData);
+  const mountBugDetails = (e, value) => {
+    toggleBugDetails();
+    setShowBugDetails({ show: true, data: value });
+  };
+
+  const toggleBugDetails = () => {
+    setShowBugDetails({ show: !showBugDetails.show, data: {} });
+  };
+
+  const showProfileToggle = () => {
+    setShowProfile(!showProfile);
+  };
+
+  const mountAndToggle = (e, value) => {
+    setProfileLoading(true);
+    userService
+      .getUserDetails({ username: value })
+      .then((response) => {
+        setUserInfo(response);
+        showProfileToggle();
+        setProfileLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setProfileLoading(false);
+      });
+  };
+
 
   const RecentBugs = (
     <div className='sm:ml-8 py-6'>
@@ -48,9 +94,12 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
       {recentData?.bugs?.map((item) => {
         return (
           <li key={item.id}>
-            <Link className='link' to={`/bug-details/${item.id}`}>
+            <p
+              className='link cursor-pointer inline-block'
+              onClick={(e) => mountBugDetails(e, item)}
+            >
               {formatText(item.title)}
-            </Link>
+            </p>
             {"  "}
             <span className='text-disbaledText italic text-xs'>
               ({item.status} - {formatDate(item?.reportDate)})
@@ -79,7 +128,7 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
     </div>
   );
 
-  return (
+  const ProjectDetails = (
     <div className='sm:mx-4 mx-0.5 text-sm'>
       {toggle && BackButton}
       <div className='sm:ml-8 my-6 block'>
@@ -101,7 +150,12 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
         <h1 className='text-2xl py-2'>{project?.projectName}</h1>
         <p className='text-sideBarText'>
           Added By{" - "}
-          <span className='link cursor-pointer'>{reportedBy?.username}</span>
+          <span
+            onClick={(e) => mountAndToggle(e, reportedBy.username)}
+            className='link cursor-pointer'
+          >
+            {reportedBy?.username}
+          </span>
         </p>
         <p className='text-sideBarText py-4'>{project?.description}</p>
         <p className='text-sideBarText'>
@@ -117,7 +171,7 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
           </a>
         </p>
       </div>
-        {!loading ? RecentBugs : <Spinner />}
+      {!loading ? RecentBugs : <Spinner />}
       <AddBugModal
         showModal={showAddBugModal}
         toggle={addBugToggle}
@@ -127,6 +181,27 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
         forceLoading={forceLoading}
       />
     </div>
+  );
+
+  return (
+    <>
+      {showBugDetails?.show ? (
+        <BugDetails
+          toggle={toggleBugDetails}
+          data={showBugDetails?.data}
+          profileToggle={showProfileToggle}
+          mountAndToggle={mountAndToggle}
+        />
+      ) : (
+        ProjectDetails
+      )}
+      <ProfileView
+        showModal={showProfile}
+        profileObj={userInfo}
+        toggle={showProfileToggle}
+      />
+      {profileLoading && <Loader />};
+    </>
   );
 };
 
