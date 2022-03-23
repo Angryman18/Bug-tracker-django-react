@@ -4,7 +4,7 @@ import { Button, Icon } from "@material-tailwind/react";
 
 // components
 import AddBugModal from "../bug/addbug-modal";
-import Spinner from "../../components/spinner/spinner";
+import Spinner from "../../components/spinner/spinner.jsx";
 import BugDetails from "../bug/bug-details";
 import ProfileView from "../bug/profile-view";
 
@@ -14,7 +14,7 @@ import useDateFormat from "../../hooks/useFormat";
 // services
 import bugServices from "../../services/bug.services";
 import userService from "../../services/user.service";
-import Loader from "../../components/spinner/loader";
+import Loader from "../../components/spinner/loader.jsx";
 
 // services
 
