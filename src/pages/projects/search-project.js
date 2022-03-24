@@ -13,7 +13,7 @@ function SearchProject() {
   const [displayResult, setDisplayResult] = useState(false);
 
   const SearchResult = (
-    <div className='border-x border-b max-h-40 scrollbar-thin scrollbar-thumb-slate-200  overflow-y-scroll rounded-sm border-sideBarBorder block shadow-md'>
+    <div className='border-x border-b absolute w-full max-h-40 scrollbar-thin scrollbar-thumb-slate-200  overflow-y-scroll rounded-sm border-sideBarBorder block shadow-md'>
       {searchResult?.map((item) => {
         return (
           <p
@@ -63,7 +63,9 @@ function SearchProject() {
         onChange={handleInput}
         onBlur={() => setDisplayResult(false)}
       />
-      {!isEmpty(SearchResult) && displayResult && SearchResult}
+      <div className='relative'>
+        {!isEmpty(SearchResult) && displayResult && SearchResult}
+      </div>
     </div>
   );
 }

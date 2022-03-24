@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "@material-tailwind/react";
 
 // components
 import SearchProject from "./search-project";
 import ProjectCard from "./project-card";
+import Spinner from '../../components/spinner/spinner.jsx';
 
 // services
 import projectService from "../../services/project.service";
@@ -10,16 +12,26 @@ import projectService from "../../services/project.service";
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [pageNo, setPageNo] = useState(1);
+  const [fetchLoading, setFetchLoading] = useState(false);
 
   useEffect(() => {
     const Obj = { page: pageNo };
+    setFetchLoading(true);
     projectService
-      .getAllProjects(Obj)
+      .getProjectPage(Obj)
       .then((res) => setProjects((pre) => [...pre, ...res]))
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        return setFetchLoading(false);
       });
   }, [pageNo]);
+
+  const loadMoreHandler = (e) => {
+    e.preventDefault();
+    setPageNo(pageNo + 1);
+  };
 
   return (
     <div>
@@ -36,22 +48,24 @@ const Projects = () => {
             </div>
           );
         })}
-
-        {/* <div className='w-80'>
-          <ProjectCard />
-        </div>
-        <div className='w-80'>
-          <ProjectCard />
-        </div>
-        <div className='w-80'>
-          <ProjectCard />
-        </div>
-        <div className='w-80'>
-          <ProjectCard />
-        </div>
-        <div className='w-80'>
-          <ProjectCard />
-        </div> */}
+      </div>
+      <div className='py-6 flex justify-center items-center'>
+        {!fetchLoading ? (
+          <Button
+            color='lightBlue'
+            buttonType='filled'
+            size='regular'
+            rounded={false}
+            block={false}
+            iconOnly={false}
+            ripple='light'
+            onClick={loadMoreHandler}
+          >
+            Load More
+          </Button>
+        ) : (
+          <Spinner />
+        )}
       </div>
     </div>
   );
