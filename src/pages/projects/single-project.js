@@ -207,6 +207,7 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
 
 SingleProject.defaultProps = {
   toggle: false,
+  forceRefresh: (value) => value,
 };
 
 export default SingleProject;
