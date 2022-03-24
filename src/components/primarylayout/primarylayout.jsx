@@ -108,7 +108,7 @@ const PrimaryLayout = () => {
         </a>
       </div>
       {/* content */}
-      <div className='flex-1 md:overflow-y-scroll'>
+      <div className='flex-1 md:overflow-y-auto'>
         <Outlet />
       </div>
     </div>

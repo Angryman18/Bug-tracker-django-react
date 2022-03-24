@@ -12,6 +12,19 @@ class ProjectService {
     }
   }
 
+  async getProjectPage(Obj) {
+    try {
+      const response = await customAxios.post(GET_ALL_PROJECTS_URL, Obj, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return Promise.reject(err.reponse.data);
+    }
+  }
+
   async getSearchedProject(Obj) {
     try {
       const response = await customAxios.post(SEARCHED_PROJECT, Obj, {

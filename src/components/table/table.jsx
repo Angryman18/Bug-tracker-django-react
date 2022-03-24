@@ -64,7 +64,7 @@ const Table = ({ columns, data, pagination }) => {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+                <th className="text-left border-r-0 py-4 pl-4" {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
             </tr>
           ))}
@@ -87,10 +87,10 @@ const Table = ({ columns, data, pagination }) => {
             page?.map((row, i) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()}>
+                <tr className="py-2 pl-4 border-b" {...row.getRowProps()}>
                   {row.cells.map((cell) => {
                     return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                      <td className="border-none" {...cell.getCellProps()}>{cell.render("Cell")}</td>
                     );
                   })}
                 </tr>

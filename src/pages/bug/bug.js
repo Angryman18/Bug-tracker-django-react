@@ -131,11 +131,11 @@ function BugPage(props) {
             <span className='block'>
               {format(new Date(row.value), "do MMM, yyyy")}
             </span>
-            <span className='text-xs italic text-slate-400'>
+            {/* <span className='text-xs italic text-slate-400'>
               {formatDistance(subDays(new Date(row.value), 0), new Date(), {
                 addSuffix: true,
               })}
-            </span>
+            </span> */}
           </p>
         );
       },
@@ -144,23 +144,22 @@ function BugPage(props) {
       Header: "Priority",
       accessor: "priority",
       width: 100,
-      headerStyle: { textAlign: "center" },
       Cell: (row) => {
         if (row.value === "High") {
-          return <p className='danger mx-auto'>{row.value}</p>;
+          return <p className='danger'>{row.value}</p>;
         } else if (row.value === "Medium") {
-          return <p className='warning mx-auto'>{row.value}</p>;
+          return <p className='warning'>{row.value}</p>;
         } else if (row.value === "Low") {
-          return <p className='primary mx-auto'>{row.value}</p>;
+          return <p className='primary'>{row.value}</p>;
         } else {
-          return <p className='secondary mx-auto'>{row.value}</p>;
+          return <p className='secondary'>{row.value}</p>;
         }
       },
     },
     {
       Header: "Reported By",
       accessor: "reportedBy.username",
-      width: 100,
+      width: 120,
       Cell: (row) => {
         return (
           <p
@@ -193,13 +192,13 @@ function BugPage(props) {
       width: 110,
       Cell: (row) => {
         if (row.value === "Resolved") {
-          return <p className='success mx-auto'>{row.value}</p>;
+          return <p className='success'>{row.value}</p>;
         } else if (row.value === "Pending") {
-          return <p className='warning mx-auto'>{row.value}</p>;
+          return <p className='warning'>{row.value}</p>;
         } else if (row.value === "Rejected") {
-          return <p className='danger mx-auto'>{row.value}</p>;
+          return <p className='danger'>{row.value}</p>;
         }
-        return <p className='secondary w-24 mx-auto'>{row.value}</p>;
+        return <p className='secondary w-24'>{row.value}</p>;
       },
     },
   ];
