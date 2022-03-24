@@ -35,6 +35,12 @@ const Projects = () => {
       });
   }, [pageNo]);
 
+  const searchProjectClickHandler = (e, value) => {
+    console.log(value)
+    setProjectDetails({project: value, reportedBy: value?.user});
+    setDisplayProjectDetails(!displayProjectDetails);
+  }
+
   const loadMoreHandler = (e) => {
     e.preventDefault();
     setPageNo(pageNo + 1);
@@ -54,7 +60,7 @@ const Projects = () => {
     <>
       <div className='py-6 flex justify-center'>
         <div className='flex flex-col justify-center sm:w-96 w-96 px-4 box-border'>
-          <SearchProject />
+          <SearchProject searchProjectClickHandler={searchProjectClickHandler} />
         </div>
       </div>
       <div className='block'>

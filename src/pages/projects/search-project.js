@@ -7,7 +7,7 @@ import DefaultInput from "../../components/input/input";
 // services
 import projectService from "../../services/project.service";
 
-function SearchProject() {
+function SearchProject({searchProjectClickHandler}) {
   const [searchedText, setSearchText] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [displayResult, setDisplayResult] = useState(false);
@@ -18,7 +18,8 @@ function SearchProject() {
         return (
           <p
             key={item.projectName}
-            className='py-1 px-2 cursor-pointer hover:bg-sideBarBorder text-sideBarText'
+            className='py-1 px-2 cursor-pointer bg-white hover:bg-sideBarBorder text-sideBarText'
+            onClick={e => searchProjectClickHandler(e, item)}
           >
             {item.projectName}
           </p>
@@ -61,7 +62,7 @@ function SearchProject() {
         placeholder='Search Project'
         value={searchedText}
         onChange={handleInput}
-        onBlur={() => setDisplayResult(false)}
+        // onBlur={() => setDisplayResult(false)}
       />
       <div className='relative'>
         {!isEmpty(SearchResult) && displayResult && SearchResult}
