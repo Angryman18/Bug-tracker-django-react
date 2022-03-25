@@ -59,7 +59,7 @@ function SearchProject({searchProjectClickHandler}) {
       <DefaultInput
         type='search'
         className='py-3'
-        placeholder='Search Project'
+        placeholder='eg: bugtracker'
         value={searchedText}
         onChange={handleInput}
         // onBlur={() => setDisplayResult(false)}
