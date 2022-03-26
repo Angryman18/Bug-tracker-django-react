@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 // components
-import Modal from "../../components/modal/Modal";
+import Modal from "../../components/modal/Modal.jsx";
 import DefaultInput from "../../components/input/input";
 import DefaultTextArea from "../../components/textarea/textarea";
 import { Button } from "@material-tailwind/react";
