@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import isEmpty from "ramda/src/isEmpty";
 
 // components
@@ -11,6 +11,8 @@ function SearchProject({searchProjectClickHandler}) {
   const [searchedText, setSearchText] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [displayResult, setDisplayResult] = useState(false);
+
+  const searchRef = useRef();
 
   const SearchResult = (
     <div className='border-x border-b absolute w-full max-h-40 scrollbar-thin scrollbar-thumb-slate-200  overflow-y-scroll rounded-sm border-sideBarBorder block shadow-md'>
@@ -35,6 +37,7 @@ function SearchProject({searchProjectClickHandler}) {
 
   useEffect(() => {
     setSearchResult([]);
+    searchRef.current.focus()
     const timer = setTimeout(() => {
       if (searchedText.length > 0) {
         projectService
@@ -62,6 +65,7 @@ function SearchProject({searchProjectClickHandler}) {
         placeholder='eg: bugtracker'
         value={searchedText}
         onChange={handleInput}
+        ref={searchRef}
         // onBlur={() => setDisplayResult(false)}
       />
       <div className='relative'>

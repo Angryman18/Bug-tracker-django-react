@@ -1,6 +1,10 @@
 import customAxios from "./axios.service";
 
-import { GET_ALL_PROJECTS_URL, SEARCHED_PROJECT } from "./api-endpoints";
+import {
+  GET_ALL_PROJECTS_URL,
+  SEARCHED_PROJECT,
+  ADD_PROJECT,
+} from "./api-endpoints";
 
 class ProjectService {
   async getAllProjects() {
@@ -35,6 +39,19 @@ class ProjectService {
       return response.data;
     } catch (err) {
       Promise.reject(err.response.data);
+    }
+  }
+
+  async addProject(Obj) {
+    try {
+      const response = await customAxios.post(ADD_PROJECT, Obj, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return Promise.reject(err.response.data);
     }
   }
 }

@@ -6,7 +6,7 @@ import { combineReducers } from "redux";
 import { LOGOUT } from "./actions/types";
 
 const Reducer = combineReducers({
-  BugReducer,
+  // BugReducer,
   FeatureReducer,
   AuthReducer,
   ProjectReducer,

@@ -6,21 +6,29 @@ import SearchProject from "./search-project";
 import ProjectCard from "./project-card";
 import Spinner from "../../components/spinner/spinner.jsx";
 import SingleProject from "./single-project";
+import AddProjectModal from "./add-project";
+import Loader from "../../components/spinner/loader.jsx";
 
 // services
 import projectService from "../../services/project.service";
 import { isEmpty } from "ramda";
 
 const Projects = () => {
-  const [projects, setProjects] = useState({lastPage: false, data: []});
+  const [projects, setProjects] = useState({ lastPage: false, data: [] });
   const [pageNo, setPageNo] = useState(1);
   const [fetchLoading, setFetchLoading] = useState(false);
+  const [overlayLoading, setOverLayLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
   const [displayProjectDetails, setDisplayProjectDetails] = useState(false);
   const [projectDetails, setProjectDetails] = useState({
     project: {},
     reportedBy: {},
   });
+  const [showAddProjectModal, setShowAddProjectModal] = useState(false);
+
+  const toggleAddProjectModal = () => {
+    setShowAddProjectModal(!showAddProjectModal);
+  };
 
   useEffect(() => {
     const Obj = { page: pageNo };
@@ -28,7 +36,10 @@ const Projects = () => {
     projectService
       .getProjectPage(Obj)
       .then((res) => {
-        setProjects((pre) => ({lastPage: isEmpty(res), data:[...pre.data, ...res]}))
+        setProjects((pre) => ({
+          lastPage: isEmpty(res),
+          data: [...pre.data, ...res],
+        }));
       })
       .catch((err) => {
         console.log(err);
@@ -59,8 +70,13 @@ const Projects = () => {
     setPageLoading(value);
   };
 
+  const forceOverlayLoading = (value) => {
+    setOverLayLoading(value);
+  }
+
   const content = (
     <>
+      {overlayLoading && <Loader />}
       <div className='py-12 flex justify-center flex-col items-center'>
         <h1 className='text-3xl text-sideBarText py-2 pl-6'>
           Search For your Favourite Project
@@ -85,7 +101,7 @@ const Projects = () => {
             block={false}
             iconOnly={false}
             ripple='light'
-            // onClick={loadMoreHandler}
+            onClick={toggleAddProjectModal}
           >
             Add Project
           </Button>
@@ -102,22 +118,26 @@ const Projects = () => {
         })}
       </div>
       <div className='py-6 flex justify-center items-center'>
-        {!fetchLoading ? projects.lastPage ? 
-        <p className="text-sideBarText pointer-events-none text-lg">Thats all for now</p>
-        : (
-          <Button
-            color='lightBlue'
-            buttonType='filled'
-            size='regular'
-            className='h-10'
-            rounded={false}
-            block={false}
-            iconOnly={false}
-            ripple='light'
-            onClick={loadMoreHandler}
-          >
-            Load More
-          </Button>
+        {!fetchLoading ? (
+          projects.lastPage ? (
+            <p className='text-sideBarText pointer-events-none text-lg'>
+              Thats all for now
+            </p>
+          ) : (
+            <Button
+              color='lightBlue'
+              buttonType='filled'
+              size='regular'
+              className='h-10'
+              rounded={false}
+              block={false}
+              iconOnly={false}
+              ripple='light'
+              onClick={loadMoreHandler}
+            >
+              Load More
+            </Button>
+          )
         ) : (
           <Spinner />
         )}
@@ -126,7 +146,7 @@ const Projects = () => {
   );
 
   return (
-    <div className="overflow-x-hidden">
+    <div className='overflow-x-hidden'>
       {displayProjectDetails ? (
         <SingleProject
           toggle={handleClick}
@@ -136,6 +156,11 @@ const Projects = () => {
       ) : (
         content
       )}
+      <AddProjectModal
+        toggle={toggleAddProjectModal}
+        showModal={showAddProjectModal}
+        forceOverlayLoading={forceOverlayLoading}
+      />
     </div>
   );
 };

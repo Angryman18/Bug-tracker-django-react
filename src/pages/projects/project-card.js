@@ -31,7 +31,7 @@ const ProjectCard = ({ projectObj, onClick }) => {
   // ]
 
   return (
-    <Card>
+    <Card className='h-44'>
       <CardBody>
         <h1 onClick={(e) => onClick(e, projectObj)} className='link cursor-pointer text-xl'>
           {projectObj?.projectName}

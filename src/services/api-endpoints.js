@@ -10,3 +10,4 @@ export const GET_USER_INFO = BASE_URL + "findUser";
 export const GET_USER_DETAILS = BASE_URL + "getuserdetail";
 export const RECENT_BUGS = BASE_URL + "recent-bugs";
 export const SEARCHED_PROJECT = BASE_URL + "search-project";
+export const ADD_PROJECT = BASE_URL + "add-project";

@@ -25,8 +25,8 @@ import BugDetails from "./bug-details.js";
 import SingleProject from "../projects/single-project.js";
 
 function BugPage(props) {
-  const { dispatch, projects, bugs } = props;
-  // const [bugs, setBugs] = useState([]);
+  const { dispatch, projects } = props;
+  const [bugs, setBugs] = useState([]);
   const [updatelist, setUpdatelist] = useState(false);
   const [displayProfile, setDisplayProfile] = useState(false);
   const [displayAddBug, setDisplayAddBug] = useState(false);
@@ -213,6 +213,7 @@ function BugPage(props) {
       setLoading(true);
       dispatch(filterAllBugs(Obj))
         .then((res) => {
+          setBugs(res)
           setLoading(false);
         })
         .catch((err) => {
@@ -294,7 +295,7 @@ const mapStateToProps = (state) => {
   const bugs = state?.BugReducer?.data;
   return {
     projects,
-    bugs: bugs ?? [],
+    // bugs: bugs ?? [],
   };
 };
 
