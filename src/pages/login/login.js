@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import jwt_decode from "jwt-decode";
 
 // files
-import Background from "../../images/background.jpg";
+import Background from "../../images/background.svg";
 
 // components
 import DefaultInput from "../../components/input/input";
@@ -112,7 +112,7 @@ const LoginPage = (props) => {
                 className={loading && "pointer-events-none cursor-not-allowed"}
                 buttonType={loading ? "outline" : "filled"}
                 size='Regular'
-                className='h-12'
+                // className='h-12'
                 rounded={false}
                 block={false}
                 iconOnly={false}

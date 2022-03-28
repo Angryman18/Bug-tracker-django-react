@@ -1,3 +1,4 @@
+// vendors
 import React, { useState, useEffect } from "react";
 import { Button } from "@material-tailwind/react";
 
@@ -8,17 +9,27 @@ import Spinner from "../../components/spinner/spinner.jsx";
 import SingleProject from "./single-project";
 import AddProjectModal from "./add-project";
 import Loader from "../../components/spinner/loader.jsx";
+import FilterProject from "./filter-project";
 
 // services
 import projectService from "../../services/project.service";
-import { isEmpty } from "ramda";
+import { isEmpty, update } from "ramda";
+
+// hoooks
+import useFilter from "../../hooks/useFilter";
+
+// utils
+import { NEWESET_FIRST } from "../../helpers/filters";
 
 const Projects = () => {
   const [projects, setProjects] = useState({ lastPage: false, data: [] });
   const [pageNo, setPageNo] = useState(1);
   const [fetchLoading, setFetchLoading] = useState(false);
   const [overlayLoading, setOverLayLoading] = useState(false);
+  const [updatelist, setUpdateList] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
+  const [filterBy, setFilterBy] = useState(NEWESET_FIRST);
+  const [masterFilter] = useFilter();
   const [displayProjectDetails, setDisplayProjectDetails] = useState(false);
   const [projectDetails, setProjectDetails] = useState({
     project: {},
@@ -30,16 +41,26 @@ const Projects = () => {
     setShowAddProjectModal(!showAddProjectModal);
   };
 
+  const getSelectedFilter = (value) => {
+    setFilterBy(value);
+  };
+
+  const filterProjects = (response = [], clear = false) => {
+    const data = () => {
+      if (clear) return [...response] ;
+      return [...projects.data, ...response]
+    };
+    const filteredData = masterFilter(filterBy, data());
+    return filteredData;
+  };
+
   useEffect(() => {
     const Obj = { page: pageNo };
     setFetchLoading(true);
     projectService
       .getProjectPage(Obj)
       .then((res) => {
-        setProjects((pre) => ({
-          lastPage: isEmpty(res),
-          data: [...pre.data, ...res],
-        }));
+        setProjects({ lastPage: isEmpty(res), data: filterProjects(res)});
       })
       .catch((err) => {
         console.log(err);
@@ -48,6 +69,26 @@ const Projects = () => {
         return setFetchLoading(false);
       });
   }, [pageNo]);
+
+  useEffect(() => {
+    const Obj = { page: pageNo };
+    setFetchLoading(true);
+    projectService
+      .getProjectPage(Obj)
+      .then((res) => {
+        setProjects({ lastPage: isEmpty(res), data: filterProjects(res, true)});
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        return setFetchLoading(false);
+      });
+  }, [updatelist]);
+
+  useEffect(() => {
+    setProjects({ ...projects, data: filterProjects() });
+  }, [filterBy]);
 
   const searchProjectClickHandler = (e, value) => {
     console.log(value);
@@ -72,7 +113,11 @@ const Projects = () => {
 
   const forceOverlayLoading = (value) => {
     setOverLayLoading(value);
-  }
+  };
+
+  const forceRefresh = () => {
+    setUpdateList(!updatelist);
+  };
 
   const content = (
     <>
@@ -107,6 +152,13 @@ const Projects = () => {
           </Button>
         </div>
         <hr className='mx-12' />
+      </div>
+      <div className='flex flex-row gap-x-3 items-center py-4 px-12'>
+        Filter Project
+        <FilterProject
+          getSelectedFilter={getSelectedFilter}
+          defaultSelect={filterBy}
+        />
       </div>
       <div className='flex flex-row gap-x-6 gap-y-3 flex-wrap justify-center items-center py-6 sm:pl-6'>
         {projects?.data?.map((project) => {
@@ -160,6 +212,7 @@ const Projects = () => {
         toggle={toggleAddProjectModal}
         showModal={showAddProjectModal}
         forceOverlayLoading={forceOverlayLoading}
+        forceReloading={forceRefresh}
       />
     </div>
   );

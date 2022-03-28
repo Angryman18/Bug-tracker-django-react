@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { ClosingAlert } from "@material-tailwind/react";
 
 // file
-import Background from "../../images/background.jpg";
+import Background from "../../images/background.svg";
 
 // components
 import SelectBox from "../../components/select/select";

@@ -27,7 +27,7 @@ const initialErrorFields = {
   liveSiteLink: false,
 };
 
-const AddProjectModal = ({ toggle, showModal, forceOverlayLoading }) => {
+const AddProjectModal = ({ toggle, showModal, forceOverlayLoading, forceReloading }) => {
   const [formData, setFormData] = useState({ ...initialFormData });
   const [error, setError] = useState({ ...initialErrorFields });
 
@@ -50,13 +50,13 @@ const AddProjectModal = ({ toggle, showModal, forceOverlayLoading }) => {
       forceOverlayLoading(true)
       projectServices.addProject(formData)
         .then((res) => {
-          console.log(res);
           toggle();
           forceOverlayLoading(false)
+          forceReloading()
         })
         .catch((err) => {
-          console.log(err);
           forceOverlayLoading(false)
+          forceReloading()
         });
     } else {
       return setError({
