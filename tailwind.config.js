@@ -24,6 +24,9 @@ module.exports = {
         cardBorder: "#5087af",
         cardbg: "#f3f7f8",
         disbaledText: "#94a3b8",
+        lightOrange: "#fb923c",
+        lightRose: "#fb7185",
+        lightIndigo: "#818cf8"
       },
       spacing: {
         104: "26rem",
