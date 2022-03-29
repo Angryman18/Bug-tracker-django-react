@@ -10,6 +10,7 @@ import SingleProject from "./single-project";
 import AddProjectModal from "./add-project";
 import Loader from "../../components/spinner/loader.jsx";
 import FilterProject from "./filter-project";
+import Wrapper from "../../components/wrapper/wrapper";
 
 // services
 import projectService from "../../services/project.service";
@@ -122,12 +123,12 @@ const Projects = () => {
   const content = (
     <>
       {overlayLoading && <Loader />}
-      <div className='py-12 flex justify-center flex-col items-center'>
-        <h1 className='text-3xl text-sideBarText py-2 pl-6'>
+      <div className='py-12 flex w-full justify-center flex-col items-center'>
+        <h1 className='text-3xl text-sideBarText py-2'>
           Search For your Favourite Project
         </h1>
-        <div className='flex justify-center'>
-          <div className='flex flex-col justify-center sm:w-160 w-screen px-4 box-border'>
+        <div className='flex flex-1 w-full justify-center'>
+          <div className='flex flex-col justify-center sm:w-128 md:160 w-full box-border'>
             <SearchProject
               searchProjectClickHandler={searchProjectClickHandler}
             />
@@ -135,7 +136,7 @@ const Projects = () => {
         </div>
       </div>
       <div className='block'>
-        <div className='flex justify-between flex-col sm:flex-row gap-y-2 sm:items-center px-12'>
+        <div className='flex justify-between flex-col sm:flex-row gap-y-2 sm:items-center'>
           <h1 className='py-4 text-3xl'>Recent Projects</h1>
           <Button
             color='lightBlue'
@@ -151,9 +152,9 @@ const Projects = () => {
             Add Project
           </Button>
         </div>
-        <hr className='mx-12' />
+        <hr className='mx-6' />
       </div>
-      <div className='flex flex-row gap-x-3 items-center py-4 px-12'>
+      <div className='flex flex-row gap-x-3 items-center py-4'>
         Filter Project
         <FilterProject
           getSelectedFilter={getSelectedFilter}
@@ -198,6 +199,7 @@ const Projects = () => {
   );
 
   return (
+    <Wrapper>
     <div className='overflow-x-hidden'>
       {displayProjectDetails ? (
         <SingleProject
@@ -215,6 +217,7 @@ const Projects = () => {
         forceReloading={forceRefresh}
       />
     </div>
+    </Wrapper>
   );
 };
 

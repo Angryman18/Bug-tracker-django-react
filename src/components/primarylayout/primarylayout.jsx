@@ -22,8 +22,8 @@ const PrimaryLayout = () => {
   };
 
   return (
-    <div className='md:flex relative h-screen'>
-      <div className='w-full sticky top-0 flex justify-between items-center px-3 h-12 md:hidden bg-sideBarBg border-b border-sideBarBorder shadow-sm'>
+    <div className='md:flex relative h-full sm:h-screen'>
+      <div className='w-full z-30 sticky top-0 flex justify-between items-center px-3 h-12 md:hidden bg-sideBarBg border-b border-sideBarBorder shadow-sm'>
         <button className='focus:bg-black focus:text-white' onClick={toggle}>
           <BiMenu className='text-4xl' />
         </button>
@@ -38,9 +38,9 @@ const PrimaryLayout = () => {
       )}
       {/* nav */}
       <div
-        className={`w-52 fixed h-full overflow-hidden sm:absolute z-30 opacity-100 transform ${
-          !sidebarOpen && "-translate-x-full md:translate-x-0 md:relative"
-        } transition-all duration-200 top-0 bottom-0 left-0 bg-sideBarBg border-r border-sideBarBorder`}
+        className={`w-52 fixed overflow-hidden z-30 opacity-100 transform ${
+          !sidebarOpen && "-translate-x-full md:translate-x-0 md:relative h-screen"
+        } transition-all duration-200 top-0 h-screen bottom-0 left-0 bg-sideBarBg border-r border-sideBarBorder`}
       >
         <NavLink
           to='/dashboard'

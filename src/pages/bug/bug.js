@@ -23,6 +23,7 @@ import ProfileView from "./profile-view.js";
 import Loader from "../../components/spinner/loader.jsx";
 import BugDetails from "./bug-details.js";
 import SingleProject from "../projects/single-project.js";
+import Wrapper from "../../components/wrapper/wrapper.js";
 
 function BugPage(props) {
   const { dispatch, projects } = props;
@@ -254,7 +255,7 @@ function BugPage(props) {
   );
 
   return (
-    <div className='mx-4 text-sm'>
+    <Wrapper className='text-sm'>
       {loading && <Loader />}
       {moutedData.mount && !mountedProjectData.mount ? (
         <BugDetails
@@ -286,7 +287,7 @@ function BugPage(props) {
         forceRefresh={forceRefresh}
         forceLoading={forceLoading}
       />
-    </div>
+    </Wrapper>
   );
 }
 
