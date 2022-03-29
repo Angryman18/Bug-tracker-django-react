@@ -255,7 +255,7 @@ function BugPage(props) {
   );
 
   return (
-    <Wrapper className='text-sm'>
+    <Wrapper>
       {loading && <Loader />}
       {moutedData.mount && !mountedProjectData.mount ? (
         <BugDetails
