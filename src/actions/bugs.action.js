@@ -20,7 +20,6 @@ const filterAllBugs = (Obj) => (dispatch) => {
       return res.data;
     })
     .catch((err) => {
-      console.log(err);
       return err.data;
     });
 };

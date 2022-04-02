@@ -1,5 +1,5 @@
 // vendors
-import React from "react";
+import React, { useEffect } from "react";
 import {
   useBlockLayout,
   useFilters,
@@ -22,7 +22,7 @@ import GlobalFilterInput from "./globalFilter";
 // css
 import "./table.css";
 
-const Table = ({ columns, data, pagination }) => {
+const Table = ({ columns, data, pagination, filterValue }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -50,6 +50,11 @@ const Table = ({ columns, data, pagination }) => {
     useGlobalFilter,
     usePagination
   );
+
+  useEffect(() => {
+    setGlobalFilter(filterValue)
+  },[filterValue])
+
   return (
     <div className='w-full'>
       <div className='w-full sm:w-64 py-4'>
@@ -163,6 +168,7 @@ const Table = ({ columns, data, pagination }) => {
 
 Table.defaultProps = {
   pagination: false,
+  filterValue: ""
 };
 
 export default Table;

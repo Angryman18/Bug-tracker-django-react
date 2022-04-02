@@ -38,7 +38,6 @@ const App = (props) => {
   //   ref.current();
   // }, [ref]);
 
-  console.log("runnig");
   return (
       <>
         <Routes>

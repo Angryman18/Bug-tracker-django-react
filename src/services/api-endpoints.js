@@ -8,6 +8,7 @@ export const ADD_BUG_URL = BASE_URL + "addbug";
 export const GET_ALL_PROJECTS_URL = BASE_URL + "projects";
 export const GET_USER_INFO = BASE_URL + "findUser";
 export const GET_USER_DETAILS = BASE_URL + "getuserdetail";
+export const GET_ALL_USERS = BASE_URL + "users";
 export const RECENT_BUGS = BASE_URL + "recent-bugs";
 export const SEARCHED_PROJECT = BASE_URL + "search-project";
 export const ADD_PROJECT = BASE_URL + "add-project";
