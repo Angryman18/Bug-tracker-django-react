@@ -1,4 +1,18 @@
 {
   "presets": ["@babel/preset-env", "@babel/preset-react"],
-  "plugins": ["@babel/plugin-transform-runtime"]
+  "plugins": ["@babel/plugin-transform-runtime", [
+    "module-resolver",
+    {
+      "alias": {
+        "@components": "./src/components",
+        "@reducers": "./src/reducers",
+        "@actions": "./src/actions",
+        "@hooks": "./src/hooks",
+        "@helpers": "./src/helpers",
+        "@routes": "./src/routes",
+        "@service": "./src/services",
+        "@pages": "./src/pages"
+      }
+    }
+  ]]
 }

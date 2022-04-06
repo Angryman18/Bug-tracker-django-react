@@ -9,10 +9,10 @@ import { Navigate } from "react-router-dom";
 import "react-datepicker/dist/react-datepicker.css";
 
 // components
-import PrivateRoutes from "./routes/privateRoutes.js";
-import LoginPage from "./pages/login/login.js";
-import SignupPage from "./pages/signup/signup.js";
-import PublicRoutes from "./routes/publicRoutes.js";
+import PrivateRoutes from "@routes/privateRoutes.js";
+import LoginPage from "@pages/login/login.js";
+import SignupPage from "@pages/signup/signup.js";
+import PublicRoutes from "@routes/publicRoutes.js";
 
 // services
 // import { GetLoggedInUserInfo } from "./actions/auth.action";
