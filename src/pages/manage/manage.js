@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
 
 // components
-import Wrapper from '../../components/wrapper/wrapper';
-import Tab from '../../components/tabs/tab';
+import Wrapper from '@components/wrapper/wrapper';
+import Tab from '@components/tabs/tab';
+import UserBugs from './user-bugs';
 
 // tab - 1 => BUGS
 // tab - 2 => FEATURES

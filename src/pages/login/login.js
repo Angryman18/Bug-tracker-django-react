@@ -9,10 +9,10 @@ import jwt_decode from "jwt-decode";
 import Background from "../../images/background.svg";
 
 // components
-import DefaultInput from "../../components/input/input";
+import DefaultInput from "@components/input/input";
 
 // actions
-import { UserLogin, GetLoggedInUserInfo } from "../../actions/auth.action";
+import { UserLogin, GetLoggedInUserInfo } from "@actions/auth.action";
 
 const initialState = {
   username: "",
