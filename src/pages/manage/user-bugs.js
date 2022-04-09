@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useEffect } from "react";
 
-
+// components
+import Table from "@components/table/table";
 
 const UserBugs = () => {
-    return (
-        <div>
-            UserBugs
-        </div>
-    )
+  const columns = [
+    {
+      Header: "Title",
+      accessor: "title",
+    },
+  ];
+
+  return <div>UserBugs</div>;
 };
 
 export default UserBugs;
