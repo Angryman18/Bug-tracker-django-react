@@ -1,14 +1,12 @@
 [
   {
     "title": "Bugs Reports",
-    "id": "1"
+    "id": "1",
+    "link": "/your-bugs"
   },
   {
     "title": "Feature Page",
-    "id": "2"
-  },
-  {
-    "title": "Other Content",
-    "id": "3"
+    "id": "2",
+    "link": "/your-features"
   }
 ]

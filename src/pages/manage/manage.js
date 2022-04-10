@@ -5,6 +5,7 @@ import Wrapper from "@components/wrapper/wrapper";
 import Tab from "@components/tabs/tab";
 import UserBugs from "./user-bugs";
 import Modal from "@components/modal/Modal.jsx";
+import BugModal from "./bug-modal";
 
 // actions
 import { getUserSpeceficBugs } from "@actions/manage.action";
@@ -54,13 +55,11 @@ const ManagePage = () => {
         />
       </div>
       {/* showModal, toggle, children */}
-      <Modal
-        size='md'
-        showModal={showBugModal}
+      <BugModal
+        openModal={showBugModal}
+        bugDetails={mountObject}
         toggle={() => setShowBugModal(!showBugModal)}
-      >
-        <div>Hello World</div>
-      </Modal>
+      />
     </Wrapper>
   );
 };
