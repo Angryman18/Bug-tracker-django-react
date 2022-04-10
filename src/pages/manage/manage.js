@@ -12,10 +12,13 @@ import { getUserSpeceficBugs } from "@actions/manage.action";
 // tab - 2 => FEATURES
 // tab - 3 => OTHER CONTENT
 
+const BUGS = 'BUGS'
+const FEATURES  = 'FEATURES'
+
 const ManagePage = () => {
   const dispatch = useDispatch();
   const [tab, setTab] = useState("1");
-  const [data, setData] = useState("");
+  const [view, setView] = useState("");
 
   const selectedOption = (value) => {
     setTab(value);
@@ -23,11 +26,11 @@ const ManagePage = () => {
 
   useEffect(() => {
     if (tab === "1") {
-      setData("BUGS");
+      setView(BUGS);
     } else if (tab === "2") {
-      setData("FEATURES");
+      setView(FEATURES);
     } else {
-      setData(null);
+      setView(null);
     }
   }, [tab]);
 
@@ -39,7 +42,9 @@ const ManagePage = () => {
     <Wrapper>
       <h1 className='text-3xl my-3'>Manage Your Contents</h1>
       <Tab selectedOption={selectedOption} />
-      <div className='my-6'>{data}</div>
+      <div className='my-6'>
+        <UserBugs view={view} />
+      </div>
     </Wrapper>
   );
 };

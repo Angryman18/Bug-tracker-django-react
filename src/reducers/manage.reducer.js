@@ -5,7 +5,7 @@ import {
 
 const initialState = [];
 
-const ManageRedcuer = (state = initialState, action) => {
+const ManageReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_USER_SPECEFIC_BUGS:
       return [...action.payload?.data];
@@ -16,4 +16,4 @@ const ManageRedcuer = (state = initialState, action) => {
   }
 };
 
-export default ManageRedcuer;
+export default ManageReducer;

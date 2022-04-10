@@ -12,7 +12,6 @@ export const getUserSpeceficBugs = () => (dispatch) => {
       return res;
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: GET_USER_SPECEFIC_BUGS_FAIL,
       });
