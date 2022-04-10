@@ -36,5 +36,5 @@
 }
 
 .link {
-  @apply text-link hover:underline
+  @apply text-link hover:underline cursor-pointer
 }

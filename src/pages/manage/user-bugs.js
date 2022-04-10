@@ -19,16 +19,29 @@ const FEATURES = "FEATURES";
 // reportDate(pin):"2022-03-18"
 
 const UserBugs = (props) => {
-  const { userBugs, dispatch, view } = props;
+  const { userBugs, dispatch, view, setMountObject, setShowBugModal } = props;
 
   if (view !== BUGS) return null;
 
   const { formatDate } = useDateFormat();
 
+  const modalOn = (value) => (e) => {
+    e.preventDefault();
+    setMountObject(value);
+    setShowBugModal(true);
+  };
+
   const columns = [
     {
       Header: "Title",
       accessor: "title",
+      Cell: (row) => {
+        return (
+          <div onClick={modalOn(row.row.original)} className='link'>
+            {row.value}
+          </div>
+        );
+      },
     },
     {
       Header: "Priority",
@@ -42,12 +55,37 @@ const UserBugs = (props) => {
       },
     },
     {
-      Header: "msg",
+      Header: "User",
+      accessor: "reportedBy.username",
+    },
+    {
+      Header: "Message",
       accessor: "msg",
+      width: 150,
+      Cell: (row) => {
+        if (!row.value) {
+          return (
+            <p className='text-slate-400 pointer-events-none italic text-sm'>
+              No Message Yet.
+            </p>
+          );
+        }
+        return row.value;
+      },
     },
     {
       Header: "Status",
       accessor: "status",
+      Cell: (row) => {
+        if (row.value === "Resolved") {
+          return <p className='success'>{row.value}</p>;
+        } else if (row.value === "Pending") {
+          return <p className='warning'>{row.value}</p>;
+        } else if (row.value === "Rejected") {
+          return <p className='danger'>{row.value}</p>;
+        }
+        return <p className='secondary w-24'>{row.value}</p>;
+      },
     },
   ];
 
