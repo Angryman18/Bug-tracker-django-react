@@ -5,22 +5,22 @@ import { Button } from "@material-tailwind/react";
 // components
 import SearchProject from "./search-project";
 import ProjectCard from "./project-card";
-import Spinner from "../../components/spinner/spinner.jsx";
+import Spinner from "@components/spinner/spinner.jsx";
 import SingleProject from "./single-project";
 import AddProjectModal from "./add-project";
-import Loader from "../../components/spinner/loader.jsx";
+import Loader from "@components/spinner/loader.jsx";
 import FilterProject from "./filter-project";
-import Wrapper from "../../components/wrapper/wrapper";
+import Wrapper from "@components/wrapper/wrapper";
 
 // services
-import projectService from "../../services/project.service";
+import projectService from "@service/project.service";
 import { isEmpty, update } from "ramda";
 
 // hoooks
-import useFilter from "../../hooks/useFilter";
+import useFilter from "@hooks/useFilter";
 
 // utils
-import { NEWESET_FIRST } from "../../helpers/filters";
+import { NEWESET_FIRST } from "@helpers/filters";
 
 const Projects = () => {
   const [projects, setProjects] = useState({ lastPage: false, data: [] });

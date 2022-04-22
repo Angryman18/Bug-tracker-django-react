@@ -7,12 +7,15 @@ import { Navigate } from "react-router-dom";
 
 // css
 import "react-datepicker/dist/react-datepicker.css";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 // components
 import PrivateRoutes from "@routes/privateRoutes.js";
 import LoginPage from "@pages/login/login.js";
 import SignupPage from "@pages/signup/signup.js";
 import PublicRoutes from "@routes/publicRoutes.js";
+import Notification from "@components/notification/Notification";
 
 // services
 // import { GetLoggedInUserInfo } from "./actions/auth.action";
@@ -40,6 +43,7 @@ const App = (props) => {
 
   return (
       <>
+      <Notification />
         <Routes>
           <Route
             path='/'

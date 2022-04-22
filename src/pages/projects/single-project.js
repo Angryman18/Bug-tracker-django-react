@@ -1,20 +1,27 @@
 // vendors
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  Fragment,
+} from "react";
 import { Button, Icon } from "@material-tailwind/react";
 
 // components
 import AddBugModal from "../bug/addbug-modal";
-import Spinner from "../../components/spinner/spinner.jsx";
+import Spinner from "@components/spinner/spinner.jsx";
 import BugDetails from "../bug/bug-details";
 import ProfileView from "../bug/profile-view";
+import Wrapper from "@components/wrapper/wrapper";
 
 // utils
-import useDateFormat from "../../hooks/useFormat";
+import useDateFormat from "@hooks/useFormat";
 
 // services
-import bugServices from "../../services/bug.services";
-import userService from "../../services/user.service";
-import Loader from "../../components/spinner/loader.jsx";
+import bugServices from "@service/bug.services";
+import userService from "@service/user.service";
+import Loader from "@components/spinner/loader.jsx";
 
 // services
 
@@ -31,7 +38,7 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
 
   const { formatDate, formatText } = useDateFormat();
   const [loading, setLoading] = useState(false);
-  const [profileLoading, setProfileLoading] = useState(false)
+  const [profileLoading, setProfileLoading] = useState(false);
   const [recentData, setRecentData] = useState({ bugs: [] });
 
   const { project, reportedBy } = projectObj;
@@ -87,7 +94,6 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
       });
   };
 
-
   const RecentBugs = (
     <div className='sm:ml-8 py-6'>
       <h1 className='text-2xl'>Recent Bugs</h1>
@@ -101,8 +107,21 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
               {formatText(item.title)}
             </p>
             {"  "}
-            <span className='text-disbaledText italic text-xs'>
-              ({item.status} - {formatDate(item?.reportDate)})
+            <span className='text-disbaledText text-xs'>
+              <p
+                style={{ fontSize: "12px" }}
+                className={`${
+                  item.status === "Pending"
+                    ? "warning"
+                    : item.status ===  "Resolved"
+                    ? "success"
+                    : item.status === "Rejected"
+                    ? "danger" : "secondary"
+                } inline`}
+              >
+                {item.status}
+              </p>
+              - {formatDate(item?.reportDate)})
             </span>
           </li>
         );
@@ -172,19 +191,21 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
         </p>
       </div>
       {!loading ? RecentBugs : <Spinner />}
-      <AddBugModal
-        showModal={showAddBugModal}
-        toggle={addBugToggle}
-        projects={[projectObj.project]}
-        disableSelection={projectObj?.project}
-        forceRefresh={forceRefresh}
-        forceLoading={forceLoading}
-      />
+      <Wrapper className='text-base'>
+        <AddBugModal
+          showModal={showAddBugModal}
+          toggle={addBugToggle}
+          projects={[projectObj.project]}
+          disableSelection={projectObj?.project}
+          forceRefresh={forceRefresh}
+          forceLoading={forceLoading}
+        />
+      </Wrapper>
     </div>
   );
 
   return (
-    <>
+    <Fragment>
       {showBugDetails?.show ? (
         <BugDetails
           toggle={toggleBugDetails}
@@ -200,8 +221,8 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
         profileObj={userInfo}
         toggle={showProfileToggle}
       />
-      {profileLoading && <Loader />};
-    </>
+      {profileLoading && <Loader />}
+    </Fragment>
   );
 };
 

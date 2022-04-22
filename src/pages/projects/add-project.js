@@ -2,16 +2,17 @@
 import React, { useState, useRef, useEffect } from "react";
 
 // components
-import Modal from "../../components/modal/Modal.jsx";
-import DefaultInput from "../../components/input/input";
-import DefaultTextArea from "../../components/textarea/textarea";
+import Modal from "@components/modal/Modal.jsx";
+import DefaultInput from "@components/input/input";
+import DefaultTextArea from "@components/textarea/textarea";
 import { Button } from "@material-tailwind/react";
+import { toast } from "react-toastify";
 
 // hooks
-import useFormValid from "../../hooks/useFormvalid";
+import useFormValid from "@hooks/useFormvalid";
 
 // services
-import projectServices from '../../services/project.service'
+import projectServices from '@service/project.service'
 
 const initialFormData = {
   projectName: "",
@@ -53,10 +54,17 @@ const AddProjectModal = ({ toggle, showModal, forceOverlayLoading, forceReloadin
           toggle();
           forceOverlayLoading(false)
           forceReloading()
+          toast.success("Project is Added", {
+            theme: "colored",
+          });
         })
         .catch((err) => {
           forceOverlayLoading(false)
           forceReloading()
+          toast.error(err.message ?? "Project Cannot be Added", {
+            theme: "colored",
+          });
+          toggle();
         });
     } else {
       return setError({

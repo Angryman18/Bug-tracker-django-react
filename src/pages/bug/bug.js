@@ -214,7 +214,7 @@ function BugPage(props) {
       setLoading(true);
       dispatch(filterAllBugs(Obj))
         .then((res) => {
-          setBugs(res)
+          setBugs(res);
           setLoading(false);
         })
         .catch((err) => {
@@ -267,7 +267,10 @@ function BugPage(props) {
       ) : !moutedData.mount && mountedProjectData.mount ? (
         <SingleProject
           toggle={toggleProjectDetails}
-          projectObj={mountedProjectData.data}
+          projectObj={{
+            project: mountedProjectData.data.project,
+            reportedBy: mountedProjectData.data.project.user,
+          }}
           forceRefresh={forceRefresh}
           forceLoading={forceLoading}
         />

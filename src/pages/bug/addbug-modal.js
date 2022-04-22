@@ -1,20 +1,21 @@
 // vendors
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 // components
-import Modal from "../../components/modal/Modal.jsx";
-import DefaultInput from "../../components/input/input.js";
-import SelectBox from "../../components/select/select.js";
-import DefaultTextArea from "../../components/textarea/textarea.js";
+import Modal from "@components/modal/Modal.jsx";
+import DefaultInput from "@components/input/input.js";
+import SelectBox from "@components/select/select.js";
+import DefaultTextArea from "@components/textarea/textarea.js";
 import { Button } from "@material-tailwind/react";
-import Loader from "../../components/spinner/loader.jsx";
+import Loader from "@components/spinner/loader.jsx";
+import { toast } from "react-toastify";
 
 
 // hooks
-import useFormValid from "../../hooks/useFormvalid.js";
+import useFormValid from "@hooks/useFormvalid.js";
 
 // services
-import bugServices from "../../services/bug.services.js";
+import bugServices from "@service/bug.services.js";
 
 const initialFormData = {
   title: "",
@@ -48,6 +49,7 @@ const AddBugModal = ({
   const [error, setError] = useState({ ...defaultErrorObject });
 
   const { checkFieldLength, blankCheck } = useFormValid();
+  const inputRef = useRef(null);
 
   const getAllInputValue = (e) => {
     setError({ ...error, [e.target.name]: false });
@@ -55,6 +57,7 @@ const AddBugModal = ({
   };
 
   useEffect(() => {
+    inputRef.current.focus()
     setFormData({ ...defaultFormObject });
     setError({ ...defaultErrorObject });
   }, [showModal]);
@@ -75,10 +78,16 @@ const AddBugModal = ({
           toggle();
           forceLoading(false)
           forceRefresh();
+          toast.success("Bug added Successfully", {
+            theme: "colored",
+          });
         })
         .catch((err) => {
           console.log(err);
           forceLoading(false)
+          toast.error("Bug Cannot be Added", {
+            theme: "colored",
+          });
         });
     } else {
       return setError({
@@ -91,6 +100,9 @@ const AddBugModal = ({
   };
 
   return (
+    <div>
+
+    
     <Modal size='md' toggle={toggle} showModal={showModal}>
       <Modal.Header toggler={toggle}>Report Bug</Modal.Header>
       <div className='py-4 px-3 sm:px-8 flex flex-col gap-y-4'>
@@ -103,6 +115,7 @@ const AddBugModal = ({
           onChange={getAllInputValue}
           extraText='minimum 5 characters'
           error={error.title}
+          ref={inputRef}
         />
         <DefaultTextArea
           name='description'
@@ -176,6 +189,7 @@ const AddBugModal = ({
         </div>
       </div>
     </Modal>
+    </div>
   );
 };
 

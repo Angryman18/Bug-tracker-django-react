@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 // components
 import Modal from "@components/modal/Modal.jsx";
@@ -52,9 +53,15 @@ const BugModal = ({ openModal, toggle, bugDetails }) => {
       .updateBugStatus(Obj)
       .then(async (res) => {
         await dispatch(getUserSpeceficBugs());
+        toast.success("Bug updated successfully", {
+          theme: "colored",
+        });
       })
       .catch((err) => {
         console.log(err);
+        toast.error("You are not authorized to update this bug", {
+          theme: "colored",
+        });
       })
       .finally(() => {
         toggle();
