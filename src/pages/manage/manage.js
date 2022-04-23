@@ -48,7 +48,10 @@ const ManagePage = () => {
 
   return (
     <Wrapper>
-      <h1 className='text-3xl my-3'>Manage Your Contents</h1>
+      <div className='my-6'>
+        <h1 className='text-3xl pb-6 text-sideBarText'>Manage Content</h1>
+        <hr />
+      </div>
       <Tab selectedOption={selectedOption} />
       {userInfo.signedAs !== 'Developer' && <Alert>
         User/Tester can only view the content that they have created.
