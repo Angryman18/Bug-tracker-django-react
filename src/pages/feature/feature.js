@@ -1,14 +1,20 @@
 import React, { useEffect, useReducer } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, connect } from "react-redux";
+import { Button, Label } from "@material-tailwind/react";
+import format from "date-fns/format";
 
 // components
 import Wrapper from "@components/wrapper/wrapper";
 import { retrieveAllFeature } from "@actions/feature.action";
 import Table from "@components/table/table.jsx";
+import Loader from "@components/spinner/loader.jsx";
+import AddFeatureModal from "./components/add-feature-modal";
 
 const initialState = {
   allbugs: [],
   nodes: [],
+  loading: false,
+  showFeatureModal: false,
 };
 
 const reducer = (state, action) => {
@@ -28,13 +34,16 @@ const reducer = (state, action) => {
         });
         return { ...state, nodes: updateNode };
       }
-
+    case "loading":
+      return { ...state, loading: !state.loading };
+    case "showFeatureModal":
+      return { ...state, showFeatureModal: !state.showFeatureModal };
     default:
       return state;
   }
 };
 
-const Features = () => {
+const Features = (props) => {
   const dispatch = useDispatch();
   const [state, setState] = useReducer(reducer, initialState);
 
@@ -42,7 +51,7 @@ const Features = () => {
 
   useEffect(() => {
     dispatch(retrieveAllFeature());
-  }, []);
+  }, [dispatch]);
 
   console.log(state);
   const handeMoreClick = (value, action) => (e) => {
@@ -73,6 +82,8 @@ const Features = () => {
               </span>
             </div>
           );
+        } else if (row.value.length <= 50) {
+          return row.value;
         }
         return (
           <div>
@@ -88,24 +99,79 @@ const Features = () => {
       },
     },
     {
-      Header: "Status",
-      accessor: "status",
+      Header: "Appealed By",
+      accessor: "apealedBy.username",
     },
     {
-      Header: "Apealed Date",
+      Header: "Status",
+      accessor: "status",
+      Cell: (row) => {
+        switch (row.value) {
+          case "Unverified":
+            return <Label color='deepOrange'>{row.value}</Label>;
+          case "in Talk":
+            return <Label color='blue'>{row.value}</Label>;
+          case "Accepted":
+            return <Label color='green'>{row.value}</Label>;
+          case "Rejected":
+            return <Label color='red'>{row.value}</Label>;
+          default:
+            return null;
+        }
+      },
+    },
+    {
+      Header: "Appealed Date",
       accessor: "apealDate",
+      Cell: row => {
+        return format(new Date(row.value), "do MMM, yyyy")
+      }
     },
   ];
 
   return (
     <Wrapper>
+      {state.loading && <Loader />}
       <div className='my-6'>
         <h1 className='text-3xl pb-6 text-sideBarText'>Feature Requests</h1>
         <hr />
       </div>
-      <Table columns={columns} data={allBugs} />
+
+      <div className='relative mt-4'>
+        <div className='lg:absolute right-0 top-4'>
+          <div className='flex gap-x-4 flex-row z-50'>
+            <Button
+              color='lightBlue'
+              buttonType='filled'
+              size='regular'
+              rounded={false}
+              block={false}
+              iconOnly={false}
+              ripple='light'
+              onClick={() => setState({ type: "showFeatureModal" })}
+            >
+              Request Feature
+            </Button>
+          </div>
+        </div>
+        <Table columns={columns} data={allBugs} pagination={true} />
+      </div>
+
+      <AddFeatureModal
+        showModal={state?.showFeatureModal}
+        toggle={() => setState({ type: "showFeatureModal" })}
+        projects={props.projects}
+        forceLoading={() => setState({ type: "loading" })}
+      />
     </Wrapper>
   );
 };
 
-export default Features;
+const mapStateToProps = (state) => {
+  const projects = state?.ProjectReducer?.data;
+  return {
+    projects,
+  };
+};
+
+export default connect(mapStateToProps)(Features);

@@ -14,6 +14,7 @@ import Spinner from "@components/spinner/spinner.jsx";
 import BugDetails from "../bug/bug-details";
 import ProfileView from "../bug/profile-view";
 import Wrapper from "@components/wrapper/wrapper";
+import AddFeatureModal from "../feature/components/add-feature-modal";
 
 // utils
 import useDateFormat from "@hooks/useFormat";
@@ -40,6 +41,7 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
   const [loading, setLoading] = useState(false);
   const [profileLoading, setProfileLoading] = useState(false);
   const [recentData, setRecentData] = useState({ bugs: [] });
+  const [showFeatureModal, setShowFeatureModal] = useState(false);
 
   const { project, reportedBy } = projectObj;
 
@@ -113,10 +115,11 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
                 className={`${
                   item.status === "Pending"
                     ? "warning"
-                    : item.status ===  "Resolved"
+                    : item.status === "Resolved"
                     ? "success"
                     : item.status === "Rejected"
-                    ? "danger" : "secondary"
+                    ? "danger"
+                    : "secondary"
                 } inline`}
               >
                 {item.status}
@@ -151,9 +154,9 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
     <div className='sm:mx-4 mx-0.5 text-sm'>
       {toggle && BackButton}
       <div className='sm:ml-8 my-6 block'>
-        <div className='flex justify-end items-center pb-3'>
+        <div className='flex justify-end items-center pb-3 gap-x-2'>
           <Button
-            color='lightBlue'
+            color='red'
             buttonType='filled'
             size='regular'
             rounded={false}
@@ -163,6 +166,18 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
             onClick={addBugToggle}
           >
             Report Bug
+          </Button>
+          <Button
+            color='lightBlue'
+            buttonType='filled'
+            size='regular'
+            rounded={false}
+            block={false}
+            iconOnly={false}
+            ripple='light'
+            onClick={() => setShowFeatureModal(true)}
+          >
+            Feature Request
           </Button>
         </div>
         <p className='text-sideBarText'>{formatDate(project?.uploadData)}</p>
@@ -198,6 +213,13 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
           projects={[projectObj.project]}
           disableSelection={projectObj?.project}
           forceRefresh={forceRefresh}
+          forceLoading={forceLoading}
+        />
+        <AddFeatureModal
+          showModal={showFeatureModal}
+          toggle={() => setShowFeatureModal(!showFeatureModal)}
+          projects={[projectObj.project]}
+          disableSelection={projectObj?.project}
           forceLoading={forceLoading}
         />
       </Wrapper>

@@ -16,7 +16,7 @@ class FeatureService {
     }
   }
 
-  async addFeature() {
+  async addFeature(Obj) {
     try {
       const res = await customAxios.post(ADD_FEATURE, Obj, {
         headers: {
