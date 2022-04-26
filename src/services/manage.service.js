@@ -1,15 +1,19 @@
 import customAxios from "./axios.service";
-import { USER_SPECEIFIC_BUGS, UPDATE_BUG_STATUS } from "./api-endpoints";
+import {
+  USER_SPECEIFIC_BUGS,
+  GET_USER_SPECEFIC_CONTENTS,
+  UPDATE_BUG_STATUS,
+} from "./api-endpoints";
 
 class ManageService {
-  async getUserBugs() {
+  async getUserSpeceficContent() {
     try {
-      const response = await customAxios.post(USER_SPECEIFIC_BUGS, {
+      const response = await customAxios.post(GET_USER_SPECEFIC_CONTENTS, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      return response.data;
+      return response?.data;
     } catch (err) {
       return err?.response?.data;
     }

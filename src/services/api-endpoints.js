@@ -12,7 +12,11 @@ export const GET_ALL_USERS = BASE_URL + "users";
 export const RECENT_BUGS = BASE_URL + "recent-bugs";
 export const SEARCHED_PROJECT = BASE_URL + "search-project";
 export const ADD_PROJECT = BASE_URL + "add-project";
+
 export const USER_SPECEIFIC_BUGS = BASE_URL + "get-userspecefic-content";
+
+export const GET_USER_SPECEFIC_CONTENTS = BASE_URL + "get-userspecefic-content";
+
 export const UPDATE_BUG_STATUS = BASE_URL + "update-bug";
 export const GET_ALL_FEATURES = BASE_URL + "allfeatures";
 export const ADD_FEATURE = BASE_URL + "add-feature";

@@ -98,7 +98,7 @@ const UserBugs = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    userBugs: state?.ManageReducer || [],
+    userBugs: state?.ManageReducer?.bugs || [],
   };
 };
 
