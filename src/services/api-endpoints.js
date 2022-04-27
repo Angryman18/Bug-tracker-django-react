@@ -18,5 +18,9 @@ export const USER_SPECEIFIC_BUGS = BASE_URL + "get-userspecefic-content";
 export const GET_USER_SPECEFIC_CONTENTS = BASE_URL + "get-userspecefic-content";
 
 export const UPDATE_BUG_STATUS = BASE_URL + "update-bug";
+
 export const GET_ALL_FEATURES = BASE_URL + "allfeatures";
+export const UPDATE_FEATURES = BASE_URL + "updateFeatures";
+export const DELETE_FEATURE = BASE_URL + "deleteFeature";
+export const DELETE_BUG = BASE_URL + "deleteBug";
 export const ADD_FEATURE = BASE_URL + "add-feature";

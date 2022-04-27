@@ -13,14 +13,20 @@ import Clip from "./clip";
 import manageService from "@service/manage.service";
 
 // actions
-import { getUserSpeceficBugs } from "@actions/manage.action";
+import { getUserSpeceficContent } from "@actions/manage.action";
 
 const initialFormData = {
   msg: "",
   status: "",
 };
 
-const BugModal = ({ openModal, toggle, bugDetails }) => {
+const BugModal = ({
+  openModal,
+  toggle,
+  bugDetails,
+  setLoading,
+  deleteHandler,
+}) => {
   const msgRef = useRef();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({ ...initialFormData });
@@ -49,10 +55,11 @@ const BugModal = ({ openModal, toggle, bugDetails }) => {
       ...formData,
       bugid: bugDetails?.id,
     };
+    setLoading(true);
     manageService
       .updateBugStatus(Obj)
       .then(async (res) => {
-        await dispatch(getUserSpeceficBugs());
+        await dispatch(getUserSpeceficContent());
         toast.success("Bug updated successfully", {
           theme: "colored",
         });
@@ -64,6 +71,7 @@ const BugModal = ({ openModal, toggle, bugDetails }) => {
         });
       })
       .finally(() => {
+        setLoading(false);
         toggle();
       });
   };
@@ -81,7 +89,6 @@ const BugModal = ({ openModal, toggle, bugDetails }) => {
           value={formData?.msg}
           onChange={handleInputChange}
           extraText={`Maximum 25 characters (${formData?.msg?.length}/25)`}
-
         />
         <div className='flex flex-row gap-x-2 gap-y-1'>
           <Clip
@@ -119,6 +126,7 @@ const BugModal = ({ openModal, toggle, bugDetails }) => {
               iconOnly={false}
               ripple='light'
               className='py-3'
+              onClick={deleteHandler}
             >
               Delete
             </Button>

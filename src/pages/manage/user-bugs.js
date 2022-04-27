@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { BiCalendarCheck } from "react-icons/bi";
 
 // components
 import Table from "@components/table/table.jsx";
@@ -9,14 +10,6 @@ import useDateFormat from "@hooks/useFormat";
 
 const BUGS = "BUGS";
 const FEATURES = "FEATURES";
-
-// id(pin):7
-// title(pin):"website hacked by hacker"
-// description(pin):"website hacked by hacker"
-// priority(pin):"High"
-// status(pin):"Pending"
-// msg(pin):""
-// reportDate(pin):"2022-03-18"
 
 const UserBugs = (props) => {
   const { userBugs, dispatch, view, setMountObject, setShowBugModal } = props;
@@ -37,8 +30,34 @@ const UserBugs = (props) => {
       accessor: "title",
       Cell: (row) => {
         return (
-          <div onClick={modalOn(row.row.original)} className='link'>
-            {row.value}
+          <div>
+            <p onClick={modalOn(row.row.original)} className='link'>
+              {row.value}
+            </p>
+            <p className='text-xs text-sideBarText'>
+              {formatDate(row?.row?.original?.reportDate)}
+            </p>
+          </div>
+        );
+      },
+    },
+    {
+      Header: "Project",
+      accessor: "project.projectName",
+      Cell: (row) => {
+        return (
+          <div>
+            <p>{row.value}</p>
+            <p className='text-xs flex flex-row items-center gap-x-1 text-green-700'>
+              <span>
+                <BiCalendarCheck size={17} />
+              </span>
+              <b>
+                {row?.row?.original?.project?.user?.username === "shyam"
+                  ? "Admin"
+                  : row?.row?.original?.project?.user?.username}
+              </b>
+            </p>
           </div>
         );
       },
@@ -48,14 +67,7 @@ const UserBugs = (props) => {
       accessor: "priority",
     },
     {
-      Header: "Date",
-      accessor: "reportDate",
-      Cell: (props) => {
-        return formatDate(props.value);
-      },
-    },
-    {
-      Header: "User",
+      Header: "Reported By",
       accessor: "reportedBy.username",
     },
     {

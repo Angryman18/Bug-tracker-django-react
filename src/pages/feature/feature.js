@@ -99,6 +99,10 @@ const Features = (props) => {
       },
     },
     {
+      Header: "Project",
+      accessor: "project.projectName",
+    },
+    {
       Header: "Appealed By",
       accessor: "apealedBy.username",
     },

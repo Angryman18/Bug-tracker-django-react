@@ -13,14 +13,20 @@ import Clip from "./clip";
 import manageService from "@service/manage.service";
 
 // actions
-import { getUserSpeceficBugs } from "@actions/manage.action";
+import { getUserSpeceficContent } from "@actions/manage.action";
 
 const initialFormData = {
   msg: "",
   status: "",
 };
 
-const FeatureModal = ({ openModal, toggle, featureDetails }) => {
+const FeatureModal = ({
+  openModal,
+  toggle,
+  featureDetails,
+  setLoading,
+  deleteHandler,
+}) => {
   const msgRef = useRef();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({ ...initialFormData });
@@ -42,31 +48,31 @@ const FeatureModal = ({ openModal, toggle, featureDetails }) => {
     });
   }, [featureDetails]);
 
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     console.log(formData);
-  //     const Obj = {
-  //       ...formData,
-  //       featureId: featureDetails?.id,
-  //     };
-  //     manageService
-  //       .updateBugStatus(Obj)
-  //       .then(async (res) => {
-  //         await dispatch(getUserSpeceficBugs());
-  //         toast.success("Bug updated successfully", {
-  //           theme: "colored",
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         toast.error("You are not authorized to update this bug", {
-  //           theme: "colored",
-  //         });
-  //       })
-  //       .finally(() => {
-  //         toggle();
-  //       });
-  //   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const Obj = {
+      ...formData,
+      id: featureDetails?.id,
+    };
+    setLoading(true);
+    manageService
+      .updateFeatureStatus(Obj)
+      .then(async (res) => {
+        await dispatch(getUserSpeceficContent());
+        toast.success(res.message ?? "Feature Status updated successfully", {
+          theme: "colored",
+        });
+      })
+      .catch((err) => {
+        toast.error(err.message ?? "You are not authorized to update the Feature Status", {
+          theme: "colored",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+        toggle();
+      });
+  };
 
   return (
     <Modal size='md' showModal={openModal} toggle={toggle}>
@@ -118,6 +124,7 @@ const FeatureModal = ({ openModal, toggle, featureDetails }) => {
               iconOnly={false}
               ripple='light'
               className='py-3'
+              onClick={deleteHandler}
             >
               Delete
             </Button>
@@ -145,7 +152,7 @@ const FeatureModal = ({ openModal, toggle, featureDetails }) => {
               iconOnly={false}
               ripple='light'
               className='py-3'
-              onClick={() => null}
+              onClick={handleSubmit}
             >
               Save
             </Button>

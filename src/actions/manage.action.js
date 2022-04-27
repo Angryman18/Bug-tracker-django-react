@@ -4,7 +4,7 @@ import {
 } from "./types";
 import manageService from "@service/manage.service";
 
-export const getUserSpeceficBugs = () => (dispatch) => {
+export const getUserSpeceficContent = () => (dispatch) => {
   return manageService
     .getUserSpeceficContent()
     .then((res) => {

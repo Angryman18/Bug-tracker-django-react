@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Label } from "@material-tailwind/react";
+import { BiCalendarCheck } from "react-icons/bi";
 
 // components
 import Table from "@components/table/table.jsx";
+
+// services
 
 // hooks
 import useDateFormat from "@hooks/useFormat";
@@ -49,8 +52,13 @@ const UserFeature = (props) => {
       accessor: "title",
       Cell: (row) => {
         return (
-          <div onClick={modalOn(row.row.original)} className='link'>
-            {row.value}
+          <div>
+            <p onClick={modalOn(row.row.original)} className='link'>
+              {row.value}
+            </p>
+            <p className='text-xs text-sideBarText'>
+              {formatDate(row?.row?.original?.apealDate)}
+            </p>
           </div>
         );
       },
@@ -92,31 +100,45 @@ const UserFeature = (props) => {
       },
     },
     {
-      Header: "Date",
-      accessor: "apealDate",
-      Cell: (props) => {
-        return formatDate(props.value);
+      Header: "Project",
+      accessor: "project.projectName",
+      Cell: (row) => {
+        return (
+          <div>
+            <p>{row.value}</p>
+            <p className='text-xs flex flex-row items-center gap-x-1 text-green-700'>
+              <span>
+                <BiCalendarCheck size={17} />
+              </span>
+              <b>
+                {row?.row?.original?.project?.user?.username === "shyam"
+                  ? "Admin"
+                  : row?.row?.original?.project?.user?.username}
+              </b>
+            </p>
+          </div>
+        );
       },
     },
     {
       Header: "User",
       accessor: "apealedBy.username",
     },
-    // {
-    //   Header: "Message",
-    //   accessor: "msg",
-    //   width: 150,
-    //   Cell: (row) => {
-    //     if (!row.value) {
-    //       return (
-    //         <p className='text-slate-400 pointer-events-none italic text-sm'>
-    //           No Message Yet.
-    //         </p>
-    //       );
-    //     }
-    //     return row.value;
-    //   },
-    // },
+    {
+      Header: "Message",
+      accessor: "msg",
+      width: 150,
+      Cell: (row) => {
+        if (!row.value) {
+          return (
+            <p className='text-slate-400 pointer-events-none italic text-sm'>
+              No Message Yet.
+            </p>
+          );
+        }
+        return row.value;
+      },
+    },
     {
       Header: "Status",
       accessor: "status",

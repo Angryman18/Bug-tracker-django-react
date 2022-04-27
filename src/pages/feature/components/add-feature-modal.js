@@ -38,6 +38,7 @@ const AddFeatureModal = ({ showModal, toggle, projects, forceLoading, disableSel
 
   useEffect(() => {
     inputRef.current.focus();
+    setFormData({...initialState, project: disableSelection?.id ?? ''});
   }, [showModal]);
 
   const getAllInputValue = (e) => {
