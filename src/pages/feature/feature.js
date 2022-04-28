@@ -11,7 +11,7 @@ import Loader from "@components/spinner/loader.jsx";
 import AddFeatureModal from "./components/add-feature-modal";
 
 const initialState = {
-  allbugs: [],
+  allFeatures: [],
   nodes: [],
   loading: false,
   showFeatureModal: false,
@@ -20,7 +20,7 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "getBugs":
-      return { ...state, allbugs: action.payload };
+      return { ...state, allFeatures: action.payload };
     case "saveNode":
       if (!state.nodes.find((b) => b.id === action.payload.id)) {
         return { ...state, nodes: [...state.nodes, action.payload] };
@@ -47,7 +47,7 @@ const Features = (props) => {
   const dispatch = useDispatch();
   const [state, setState] = useReducer(reducer, initialState);
 
-  const allBugs = useSelector((state) => state?.FeatureReducer);
+  const allFeatures = useSelector((state) => state?.FeatureReducer);
 
   useEffect(() => {
     dispatch(retrieveAllFeature());
@@ -68,12 +68,12 @@ const Features = (props) => {
       accessor: "description",
       Cell: (row) => {
         const ifNodeExist = state?.nodes.find(
-          (node) => node.id === row.row.original.id
+          (node) => node.id === row?.row?.original?.id
         );
         if (ifNodeExist && ifNodeExist.more === true) {
           return (
             <div>
-              {row.value}...
+              {row?.value}...
               <span
                 onClick={handeMoreClick(row?.row?.original?.id, false)}
                 className='link cursor-pointer'
@@ -82,8 +82,8 @@ const Features = (props) => {
               </span>
             </div>
           );
-        } else if (row.value.length <= 50) {
-          return row.value;
+        } else if (row?.value.length <= 50) {
+          return row?.value;
         }
         return (
           <div>
@@ -158,7 +158,7 @@ const Features = (props) => {
             </Button>
           </div>
         </div>
-        <Table columns={columns} data={allBugs} pagination={true} />
+        <Table columns={columns} data={allFeatures ?? []} pagination={true} />
       </div>
 
       <AddFeatureModal
