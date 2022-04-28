@@ -5,28 +5,34 @@ import formatDistance from "date-fns/formatDistance";
 import { subDays, format } from "date-fns";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { BiCalendarCheck } from "react-icons/bi";
 
 // actions
-import { retrieveAllProject } from "../../actions/project.action.js";
-import { filterAllBugs } from "../../actions/bugs.action.js";
+import { retrieveAllProject } from "@actions/project.action.js";
+import { filterAllBugs } from "@actions/bugs.action.js";
 
 // services
-import bugServices from "../../services/bug.services.js";
-import userService from "../../services/user.service.js";
+import bugServices from "@service/bug.services.js";
+import userService from "@service/user.service.js";
 
 // components
-import Table from "../../components/table/table.jsx";
+import Table from "@components/table/table.jsx";
 import AddBugModal from "./addbug-modal.js";
-import Spinner from "../../components/spinner/spinner.jsx";
-import ReactDatePicker from "../../components/datepicker/datepicker.jsx";
+import Spinner from "@components/spinner/spinner.jsx";
+import ReactDatePicker from "@components/datepicker/datepicker.jsx";
 import ProfileView from "./profile-view.js";
-import Loader from "../../components/spinner/loader.jsx";
+import Loader from "@components/spinner/loader.jsx";
 import BugDetails from "./bug-details.js";
 import SingleProject from "../projects/single-project.js";
-import Wrapper from "../../components/wrapper/wrapper.js";
+import Wrapper from "@components/wrapper/wrapper.js";
+
+// hooks
+import useDateFormat from "@hooks/useFormat.js";
 
 function BugPage(props) {
   const { dispatch, projects } = props;
+  const { formatDate } = useDateFormat();
+
   const [bugs, setBugs] = useState([]);
   const [updatelist, setUpdatelist] = useState(false);
   const [displayProfile, setDisplayProfile] = useState(false);
@@ -99,12 +105,17 @@ function BugPage(props) {
       accessor: "title",
       Cell: (row) => {
         return (
-          <p
-            className='text-link cursor-pointer hover:underline'
-            onClick={(e) => mountBugObjectView(e, row.row.original)}
-          >
-            {row.value}
-          </p>
+          <div>
+            <p
+              onClick={(e) => mountBugObjectView(e, row.row.original)}
+              className='link'
+            >
+              {row.value}
+            </p>
+            <p className='text-xs text-sideBarText'>
+              {formatDate(row?.row?.original?.reportDate)}
+            </p>
+          </div>
         );
       },
     },
@@ -113,31 +124,24 @@ function BugPage(props) {
       accessor: "project.projectName",
       Cell: (row) => {
         return (
-          <p
-            className='text-link cursor-pointer hover:underline'
-            onClick={(e) => mountProjectObejctView(e, row.row.original)}
-          >
-            {row.value}
-          </p>
-        );
-      },
-    },
-    {
-      Header: "Report Date",
-      accessor: "reportDate",
-      maxWidth: 120,
-      Cell: (row) => {
-        return (
-          <p>
-            <span className='block'>
-              {format(new Date(row.value), "do MMM, yyyy")}
-            </span>
-            {/* <span className='text-xs italic text-slate-400'>
-              {formatDistance(subDays(new Date(row.value), 0), new Date(), {
-                addSuffix: true,
-              })}
-            </span> */}
-          </p>
+          <div>
+            <p
+              className='link'
+              onClick={(e) => mountProjectObejctView(e, row.row.original)}
+            >
+              {row.value}
+            </p>
+            <p className='text-xs flex flex-row items-center gap-x-1 text-green-700'>
+              <span>
+                <BiCalendarCheck size={17} />
+              </span>
+              <b>
+                {row?.row?.original?.project?.user?.username === "shyam"
+                  ? "Admin"
+                  : row?.row?.original?.project?.user?.username}
+              </b>
+            </p>
+          </div>
         );
       },
     },
@@ -163,10 +167,7 @@ function BugPage(props) {
       width: 120,
       Cell: (row) => {
         return (
-          <p
-            onClick={(e) => mountAndToggle(e, row.value)}
-            className='underline text-blue-500 cursor-pointer'
-          >
+          <p onClick={(e) => mountAndToggle(e, row.value)} className='link'>
             {row.value}
           </p>
         );
@@ -256,10 +257,6 @@ function BugPage(props) {
 
   return (
     <Wrapper>
-      <div className='my-6'>
-        <h1 className='text-3xl pb-6 text-sideBarText'>Bugs Summary</h1>
-        <hr />
-      </div>
       {loading && <Loader />}
       {moutedData.mount && !mountedProjectData.mount ? (
         <BugDetails
@@ -279,7 +276,13 @@ function BugPage(props) {
           forceLoading={forceLoading}
         />
       ) : !moutedData.mount && !mountedProjectData.mount ? (
-        tableContent
+        <>
+          <div className='my-6'>
+            <h1 className='text-3xl pb-6 text-sideBarText'>Bugs Summary</h1>
+            <hr />
+          </div>
+          {tableContent}
+        </>
       ) : null}
 
       <ProfileView

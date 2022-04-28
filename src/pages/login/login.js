@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import jwt_decode from "jwt-decode";
 
 // files
-import Background from "../../images/background.svg";
+import Background from "@images/background.svg";
+import DemoAuth from './demo.json'
 
 // components
 import DefaultInput from "@components/input/input";
@@ -37,6 +38,14 @@ const LoginPage = (props) => {
     return false;
   }
 
+  console.log(DemoAuth)
+
+  const formAutoFill = (role) => e => {
+    e.preventDefault()
+    console.log(DemoAuth[role].username)
+    setFormData({username: DemoAuth[role].username, password: DemoAuth[role].password})
+  }
+
   const getUsername = (e) => {
     setError({ ...error, username: false });
     setFormData({ ...formData, username: e.target.value });
@@ -59,7 +68,7 @@ const LoginPage = (props) => {
         const { user_id } = jwt_decode(res?.access);
         dispatch(GetLoggedInUserInfo(user_id, res)).then(() => {
           // Navigate("/dashboard");
-          window.location.reload()
+          window.location.reload();
         });
       })
       .catch((err) => {
@@ -96,6 +105,7 @@ const LoginPage = (props) => {
               labelText='Enter Username'
               onChange={getUsername}
               error={error.username}
+              value={formData?.username}
             />
 
             <DefaultInput
@@ -105,6 +115,7 @@ const LoginPage = (props) => {
               labelText='Enter Password'
               onChange={getPassword}
               error={error.password}
+              value={formData?.password}
             />
             <div className='py-2 w-full flex flex-col'>
               <Button
@@ -121,6 +132,49 @@ const LoginPage = (props) => {
                 disabled={loading}
               >
                 {!loading ? "Log In" : "Logging In..."}
+              </Button>
+            </div>
+            <div className='flex flex-row gap-x-1 justify-center items-center'>
+              <hr className='flex-1 ml-4 border-sideBarBorder' />
+              <span className='px-2 text-sideBarText'>Demo Login</span>
+              <hr className='flex-1 mr-4 border-sideBarBorder' />
+            </div>
+            <div className='flex flex-row gap-x-2 items-center justify-evenly'>
+              <Button
+                color='lightBlue'
+                buttonType='link'
+                size='regular'
+                rounded={false}
+                block={false}
+                iconOnly={false}
+                ripple='dark'
+                onClick={formAutoFill("Developer")}
+              >
+                Developer
+              </Button>
+              <Button
+                color='lightBlue'
+                buttonType='link'
+                size='regular'
+                rounded={false}
+                block={false}
+                iconOnly={false}
+                ripple='dark'
+                onClick={formAutoFill("User")}
+              >
+                User
+              </Button>
+              <Button
+                color='lightBlue'
+                buttonType='link'
+                size='regular'
+                rounded={false}
+                block={false}
+                iconOnly={false}
+                ripple='dark'
+                onClick={formAutoFill("Tester")}
+              >
+                Tester
               </Button>
             </div>
             <div className='flex flex-row gap-x-1 justify-center items-center'>
