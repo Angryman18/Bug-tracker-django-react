@@ -15,7 +15,7 @@ import { LOGOUT } from "../../actions/types";
 import "./layout.css";
 
 // assets
-import Logo from '../../assets/image.jpeg'
+import Profile from '@images/user.png'
 
 const PrimaryLayout = () => {
   const dispatch = useDispatch();
@@ -54,9 +54,9 @@ const PrimaryLayout = () => {
       >
         <div className="py-2">
           <div className="w-full flex flex-row items-center justify-center">
-            <img src={Logo} className="w-16 h-16 object-fill rounded-full" alt="profile" />
+            <img src={Profile} className="w-16 border-2 border-lightSlate h-16 object-fill rounded-full" alt="profile" />
           </div>
-          <p className="text-center text-sideBarText">{user.user?.username}</p>
+          <p className="text-center font-bold text-sideBarText">{user.user?.username}</p>
           <p className="text-center text-sideBarText">({user?.signedAs})</p>
         </div>
         <NavLink

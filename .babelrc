@@ -11,7 +11,8 @@
         "@helpers": "./src/helpers",
         "@routes": "./src/routes",
         "@service": "./src/services",
-        "@pages": "./src/pages"
+        "@pages": "./src/pages",
+        "@images": "./src/images"
       }
     }
   ]]
