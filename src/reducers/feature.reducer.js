@@ -1,7 +1,13 @@
-const FeatureReducer = (state = {}, action) => {
+import { GET_ALL_FEATURES, GET_ALL_FEATURE_FAIL } from "../actions/types";
+
+const initialState = [];
+
+const FeatureReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "ADD_FEATURE":
-      return { ...state, data: action.payload };
+    case GET_ALL_FEATURES:
+      return [...action.payload];
+    case GET_ALL_FEATURE_FAIL:
+      return { data: [] };
     default:
       return state;
   }

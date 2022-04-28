@@ -256,6 +256,10 @@ function BugPage(props) {
 
   return (
     <Wrapper>
+      <div className='my-6'>
+        <h1 className='text-3xl pb-6 text-sideBarText'>Bugs Summary</h1>
+        <hr />
+      </div>
       {loading && <Loader />}
       {moutedData.mount && !mountedProjectData.mount ? (
         <BugDetails

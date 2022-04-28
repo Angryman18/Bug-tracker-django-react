@@ -20,10 +20,10 @@ const initialFormData = {
   status: "",
 };
 
-const BugModal = ({
+const FeatureModal = ({
   openModal,
   toggle,
-  bugDetails,
+  featureDetails,
   setLoading,
   deleteHandler,
 }) => {
@@ -43,30 +43,28 @@ const BugModal = ({
 
   useEffect(() => {
     setFormData({
-      msg: bugDetails?.msg ?? "",
-      status: bugDetails?.status ?? "Pending",
+      msg: featureDetails?.msg ?? "",
+      status: featureDetails?.status ?? "Unverified",
     });
-  }, [bugDetails]);
+  }, [featureDetails]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
     const Obj = {
       ...formData,
-      bugid: bugDetails?.id,
+      id: featureDetails?.id,
     };
     setLoading(true);
     manageService
-      .updateBugStatus(Obj)
+      .updateFeatureStatus(Obj)
       .then(async (res) => {
         await dispatch(getUserSpeceficContent());
-        toast.success("Bug updated successfully", {
+        toast.success(res.message ?? "Feature Status updated successfully", {
           theme: "colored",
         });
       })
       .catch((err) => {
-        console.log(err);
-        toast.error("You are not authorized to update this bug", {
+        toast.error(err.message ?? "You are not authorized to update the Feature Status", {
           theme: "colored",
         });
       })
@@ -78,7 +76,7 @@ const BugModal = ({
 
   return (
     <Modal size='md' showModal={openModal} toggle={toggle}>
-      <Modal.Header toggler={toggle}>Manage Bug</Modal.Header>
+      <Modal.Header toggler={toggle}>Manage Feature Request</Modal.Header>
       <div className='py-4 px-3 sm:px-8 flex flex-col gap-y-4'>
         <DefaultTextArea
           name='msg'
@@ -92,15 +90,15 @@ const BugModal = ({
         />
         <div className='flex flex-row gap-x-2 gap-y-1'>
           <Clip
-            text='We are Looking at it.'
+            text='In Discussion.'
             setText={(val) => setFormData({ ...formData, msg: val })}
           />
           <Clip
-            text='Its not an issue.'
+            text='Feature Request Accepted.'
             setText={(val) => setFormData({ ...formData, msg: val })}
           />
           <Clip
-            text='Thanks for informing it.'
+            text='Not Required.'
             setText={(val) => setFormData({ ...formData, msg: val })}
           />
         </div>
@@ -110,9 +108,9 @@ const BugModal = ({
           labelText='Current Bug Status'
           onChange={handleInputChange}
         >
-          <option value='Pending'>Pending</option>
-          <option value='In Progress'>In Progress</option>
-          <option value='Resolved'>Resolved</option>
+          <option value='Unverified'>Unverified</option>
+          <option value='in Talk'>in Talk</option>
+          <option value='Accepted'>Accepted</option>
           <option value='Rejected'>Rejected</option>
         </SelectBox>
         <div className='flex justify-between py-2'>
@@ -165,4 +163,4 @@ const BugModal = ({
   );
 };
 
-export default BugModal;
+export default FeatureModal;

@@ -1,17 +1,70 @@
 import customAxios from "./axios.service";
-import { USER_SPECEIFIC_BUGS, UPDATE_BUG_STATUS } from "./api-endpoints";
+import {
+  GET_USER_SPECEFIC_CONTENTS,
+  UPDATE_BUG_STATUS,
+  UPDATE_FEATURES,
+  DELETE_FEATURE,
+  DELETE_BUG,
+} from "./api-endpoints";
 
 class ManageService {
-  async getUserBugs() {
+  async getUserSpeceficContent() {
     try {
-      const response = await customAxios.post(USER_SPECEIFIC_BUGS, {
+      const response = await customAxios.post(GET_USER_SPECEFIC_CONTENTS, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response?.data;
+    } catch (err) {
+      return err?.response?.data;
+    }
+  }
+
+  async updateFeatureStatus(Obj) {
+    try {
+      const response = await customAxios.post(UPDATE_FEATURES, Obj, {
         headers: {
           "Content-Type": "application/json",
         },
       });
       return response.data;
     } catch (err) {
-      return err?.response?.data;
+      return Promise.reject(err.response.data);
+    }
+  }
+
+  async deleteFeature(id) {
+    try {
+      const response = await customAxios.post(
+        DELETE_FEATURE,
+        { id },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      return Promise.reject(err.response.data);
+    }
+  }
+
+  async deleteBug(id) {
+    try {
+      const response = await customAxios.post(
+        DELETE_BUG,
+        { id },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      return Promise.reject(err.response.data);
     }
   }
 
