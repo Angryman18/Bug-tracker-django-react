@@ -7,6 +7,8 @@ import React, {
   Fragment,
 } from "react";
 import { Button, Icon } from "@material-tailwind/react";
+import { RiFireLine, RiFireFill } from "react-icons/ri";
+import { useDispatch } from "react-redux";
 
 // components
 import AddBugModal from "../bug/addbug-modal";
@@ -15,6 +17,8 @@ import BugDetails from "../bug/bug-details";
 import ProfileView from "../bug/profile-view";
 import Wrapper from "@components/wrapper/wrapper";
 import AddFeatureModal from "../feature/components/add-feature-modal";
+import Comments from "./comments";
+import Loader from "@components/spinner/loader.jsx";
 
 // utils
 import useDateFormat from "@hooks/useFormat";
@@ -22,13 +26,14 @@ import useDateFormat from "@hooks/useFormat";
 // services
 import bugServices from "@service/bug.services";
 import userService from "@service/user.service";
-import Loader from "@components/spinner/loader.jsx";
+import projectService from "@service/project.service";
 
-// services
+// dispatch types
+import { ADD_LIKE_QUERY } from "@actions/types";
 
 const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
+  const dispatch = useDispatch();
   const [showAddBugModal, setAddBugModal] = useState(false);
-
   const [showBugDetails, setShowBugDetails] = useState({
     show: false,
     data: {},
@@ -150,6 +155,13 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
     </div>
   );
 
+  const likeProjectHandler = (id) => async (e) => {
+    e.preventDefault();
+    dispatch({ type: ADD_LIKE_QUERY, payload: { id } });
+    await projectService.addLike({ projectId: id })
+      
+  };
+
   const ProjectDetails = (
     <div className='sm:mx-4 mx-0.5 text-sm'>
       {toggle && BackButton}
@@ -204,8 +216,14 @@ const SingleProject = ({ toggle, projectObj, forceRefresh, forceLoading }) => {
             {project?.githubLink ?? "Not Available"}
           </a>
         </p>
+        <div>
+        </div>
+        <hr className='border-disabledText mt-4' />
       </div>
       {!loading ? RecentBugs : <Spinner />}
+      <div>
+        <Comments project={project?.id} />
+      </div>
       <Wrapper className='text-base'>
         <AddBugModal
           showModal={showAddBugModal}

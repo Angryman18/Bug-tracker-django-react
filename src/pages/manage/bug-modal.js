@@ -66,7 +66,7 @@ const BugModal = ({
       })
       .catch((err) => {
         console.log(err);
-        toast.error("You are not authorized to update this bug", {
+        toast.error(err.message ?? "Error Occured", {
           theme: "colored",
         });
       })

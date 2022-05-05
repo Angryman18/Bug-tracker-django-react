@@ -4,6 +4,9 @@ import {
   GET_ALL_PROJECTS_URL,
   SEARCHED_PROJECT,
   ADD_PROJECT,
+  ADD_COMMENTS,
+  GET_PROJECT_COMMENT,
+  ADD_LIKE,
 } from "./api-endpoints";
 
 class ProjectService {
@@ -45,6 +48,45 @@ class ProjectService {
   async addProject(Obj) {
     try {
       const response = await customAxios.post(ADD_PROJECT, Obj, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return Promise.reject(err.response.data);
+    }
+  }
+
+  async addComment(Obj) {
+    try {
+      const response = await customAxios.post(ADD_COMMENTS, Obj, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return Promise.reject(err.response.data);
+    }
+  }
+
+  async getAllProjectComment(id) {
+    try {
+      const response = await customAxios.get(`${GET_PROJECT_COMMENT}/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return Promise.reject(err.response.data);
+    }
+  }
+
+  async addLike(Obj) {
+    try {
+      const response = await customAxios.post(ADD_LIKE, Obj, {
         headers: {
           "Content-Type": "application/json",
         },

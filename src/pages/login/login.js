@@ -122,7 +122,7 @@ const LoginPage = (props) => {
                 color={loading ? "gray" : "lightBlue"}
                 className={loading && "pointer-events-none cursor-not-allowed"}
                 buttonType={loading ? "outline" : "filled"}
-                size='Regular'
+                size='regular'
                 // className='h-12'
                 rounded={false}
                 block={false}

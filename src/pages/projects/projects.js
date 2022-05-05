@@ -92,7 +92,6 @@ const Projects = () => {
   }, [filterBy]);
 
   const searchProjectClickHandler = (e, value) => {
-    console.log(value);
     setProjectDetails({ project: value, reportedBy: value?.user });
     setDisplayProjectDetails(!displayProjectDetails);
   };
