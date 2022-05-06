@@ -29,3 +29,5 @@ export const ADD_COMMENTS = BASE_URL + "add-comment-on-project";
 export const GET_PROJECT_COMMENT = BASE_URL + "get-projects-comments";
 
 export const ADD_LIKE = BASE_URL + "add-like";
+
+export const EDIT_PROFILE = BASE_URL + "editProfile";

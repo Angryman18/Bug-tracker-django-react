@@ -2,17 +2,17 @@ import React from "react";
 import { useRoutes } from "react-router-dom";
 
 // components
-import PrimaryLayout from "../components/primarylayout/primarylayout.jsx";
-import BugPage from "../pages/bug/bug.js";
-import Features from "../pages/feature/feature.js";
-import Projects from "../pages/projects/projects.js";
-import UsersList from "../pages/users/users.js";
-import Dashboard from "../pages/dashboard/dashboard.js";
-import LoginPage from "../pages/login/login.js";
-import SignupPage from "../pages/signup/signup.js";
-import BugDetails from "../pages/bug/bug-details.js";
-import ManagePage from "../pages/manage/manage.js";
-
+import PrimaryLayout from "@components/primarylayout/primarylayout.jsx";
+import BugPage from "@pages/bug/bug.js";
+import Features from "@pages/feature/feature.js";
+import Projects from "@pages/projects/projects.js";
+import UsersList from "@pages/users/users.js";
+import Dashboard from "@pages/dashboard/dashboard.js";
+import LoginPage from "@pages/login/login.js";
+import SignupPage from "@pages/signup/signup.js";
+import BugDetails from "@pages/bug/bug-details.js";
+import ManagePage from "@pages/manage/manage.js";
+import Profile from "@pages/profile/profile.js";
 
 const PrivateRoutes = () => {
   const routes = [
@@ -45,9 +45,13 @@ const PrivateRoutes = () => {
           element: <BugDetails />,
         },
         {
-          path: '/manage',
+          path: "/manage",
           element: <ManagePage />,
-        }
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
+        },
       ],
     },
   ];

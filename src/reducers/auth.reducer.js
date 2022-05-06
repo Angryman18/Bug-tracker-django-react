@@ -5,6 +5,8 @@ import {
   LOGOUT,
   SIGNUP_SUCCESS,
   SIGNUP_FAIL,
+  EDIT_PROFILE,
+  EDIT_PROFILE_FAIL,
 } from "../actions/types";
 
 const initialState = {};
@@ -30,6 +32,13 @@ const AuthReducer = (state = initialState, action) => {
       return {};
     case LOGOUT:
       return {};
+    case EDIT_PROFILE:
+      const { user } = state?.user;
+      const Obj = { ...action.payload };
+      Obj.user = user;
+      return { ...state, user: Obj };
+    case EDIT_PROFILE_FAIL:
+      return state;
     default:
       return state;
   }

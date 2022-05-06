@@ -1,6 +1,11 @@
 // vendors
 import React, { useState } from "react";
-import { AiFillHome, AiFillBug, AiTwotoneSliders, AiTwotoneGold } from "react-icons/ai";
+import {
+  AiFillHome,
+  AiFillBug,
+  AiTwotoneSliders,
+  AiTwotoneGold,
+} from "react-icons/ai";
 import { BsFillPeopleFill, BsFillGridFill } from "react-icons/bs";
 import { BiUserCircle, BiMenu, BiLogOutCircle } from "react-icons/bi";
 import { Outlet } from "react-router-dom";
@@ -8,18 +13,18 @@ import { NavLink, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { LOGOUT } from "../../actions/types";
-
-
+import { useNavigate } from "react-router-dom";
 
 // css
 import "./layout.css";
 
 // assets
-import Profile from '@images/user.png'
+import Profile from "@images/user.png";
 
 const PrimaryLayout = () => {
   const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   const user = useSelector((state) => state?.AuthReducer?.user);
 
@@ -49,15 +54,28 @@ const PrimaryLayout = () => {
       {/* nav */}
       <div
         className={`w-52 fixed overflow-hidden z-30 opacity-100 transform ${
-          !sidebarOpen && "-translate-x-full md:translate-x-0 md:relative h-screen"
+          !sidebarOpen &&
+          "-translate-x-full md:translate-x-0 md:relative h-screen"
         } transition-all duration-200 top-0 h-screen bottom-0 left-0 bg-sideBarBg border-r border-sideBarBorder`}
       >
-        <div className="py-2">
-          <div className="w-full flex flex-row items-center justify-center">
-            <img src={Profile} className="w-16 border-2 border-lightSlate h-16 object-fill rounded-full" alt="profile" />
+        <div className='py-2'>
+          <div className='w-full flex flex-row items-center justify-center'>
+            <img
+              src={Profile}
+              className='w-16 border-2 border-lightSlate h-16 object-fill rounded-full'
+              alt='profile'
+            />
           </div>
-          <p className="text-center font-bold text-sideBarText">{user.user?.username}</p>
-          <p className="text-center text-sideBarText">({user?.signedAs})</p>
+          <p className='text-center font-bold text-sideBarText'>
+            <span onClick={() => navigate("profile")} className="cursor-pointer hover:underline hover:text-link">
+              {user.user?.username}
+            </span>
+          </p>
+          <p className='text-center text-sideBarText'>
+            <span onClick={() => navigate("profile")} className="cursor-pointer hover:underline hover:text-link">
+              ({user?.signedAs})
+            </span>
+          </p>
         </div>
         <NavLink
           to='/dashboard'
