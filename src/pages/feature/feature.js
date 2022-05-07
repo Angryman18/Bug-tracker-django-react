@@ -49,8 +49,10 @@ const Features = (props) => {
 
   const allFeatures = useSelector((state) => state?.FeatureReducer);
 
-  useEffect(() => {
-    dispatch(retrieveAllFeature());
+  useEffect( async () => {
+    setState({ type: "loading" })
+    await dispatch(retrieveAllFeature());
+    setState({ type: "loading" })
   }, [dispatch]);
 
   console.log(state);
