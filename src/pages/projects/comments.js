@@ -92,7 +92,7 @@ const Comments = (props) => {
             color={loading ? "gray" : "lightBlue"}
             className={
               loading
-                ? "pointer-events-none cursor-not-allowed"
+                ? "pointer-events-none cursor-not-allowed float-right my-3"
                 : "float-right my-3"
             }
             buttonType={loading ? "outline" : "filled"}
