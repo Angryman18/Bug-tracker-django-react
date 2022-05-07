@@ -135,7 +135,7 @@ function BugPage(props) {
               <span>
                 <BiCalendarCheck size={17} />
               </span>
-              <b>
+              <b className="text-sm">
                 {row?.row?.original?.project?.user?.username === "shyam"
                   ? "Admin"
                   : row?.row?.original?.project?.user?.username}

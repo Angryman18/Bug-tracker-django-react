@@ -14,6 +14,7 @@ const DefaultInput = forwardRef(
       labelText,
       extraText,
       className,
+      ...props
     },
     ref
   ) => {
@@ -31,6 +32,7 @@ const DefaultInput = forwardRef(
           value={value}
           disabled={disabled}
           ref={ref}
+          {...props}
           className={`rounded-md ${
             error
               ? "border-red-600 focus:border-red-600"

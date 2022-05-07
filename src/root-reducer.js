@@ -4,12 +4,14 @@ import AuthReducer from "./reducers/auth.reducer";
 import ProjectReducer from "./reducers/project.reducer";
 import UserReducer from "./reducers/user.reducer";
 import ManageReducer from "./reducers/manage.reducer";
+import DashboardReducer from "./reducers/dashboard.reducer";
 import { combineReducers } from "redux";
 import { LOGOUT } from "./actions/types";
 
 const Reducer = combineReducers({
   // BugReducer,
   ManageReducer,
+  DashboardReducer,
   FeatureReducer,
   AuthReducer,
   ProjectReducer,

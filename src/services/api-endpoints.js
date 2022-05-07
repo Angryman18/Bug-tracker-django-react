@@ -24,3 +24,12 @@ export const UPDATE_FEATURES = BASE_URL + "updateFeatures";
 export const DELETE_FEATURE = BASE_URL + "deleteFeature";
 export const DELETE_BUG = BASE_URL + "deleteBug";
 export const ADD_FEATURE = BASE_URL + "add-feature";
+
+export const ADD_COMMENTS = BASE_URL + "add-comment-on-project";
+export const GET_PROJECT_COMMENT = BASE_URL + "get-projects-comments";
+
+export const ADD_LIKE = BASE_URL + "add-like";
+
+export const EDIT_PROFILE = BASE_URL + "editProfile";
+
+export const GET_DASHBOARD_STATS = BASE_URL + "getDashboardStats";

@@ -50,7 +50,9 @@ const ManagePage = () => {
   }, [tab]);
 
   useEffect(async () => {
+    setLoading(true)
     await dispatch(getUserSpeceficContent());
+    setLoading(false)
   }, []);
 
   const delelteModalHandler = e => {
