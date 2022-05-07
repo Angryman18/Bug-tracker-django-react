@@ -61,8 +61,8 @@ const PrimaryLayout = () => {
         <div className='py-2'>
           <div className='w-full flex flex-row items-center justify-center'>
             <img
-              src={Profile}
-              className='w-16 border-2 border-lightSlate h-16 object-fill rounded-full'
+              src={user?.avatar === null || !user?.avatar ? Profile : user?.avatar}
+              className='w-16 aspect-square object-cover object-center border-2 border-lightSlate h-16 rounded-full'
               alt='profile'
             />
           </div>

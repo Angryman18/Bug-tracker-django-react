@@ -12,7 +12,8 @@
         "@routes": "./src/routes",
         "@service": "./src/services",
         "@pages": "./src/pages",
-        "@images": "./src/images"
+        "@images": "./src/images",
+        "@config": "./src/config"
       }
     }
   ]]

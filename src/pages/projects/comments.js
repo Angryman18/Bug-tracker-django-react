@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
 
+// hooks
+import useGetImage from "@hooks/useImage";
+
 // components
 import DefaultTextArea from "@components/textarea/textarea";
 
@@ -19,7 +22,9 @@ import image from "@images/user.png";
 
 const Comments = (props) => {
   const dispatch = useDispatch();
+  const [getImage] = useGetImage();
   const prjectComment = useSelector((state) => state?.ProjectReducer?.comment);
+  const currUser = useSelector((state) => state?.AuthReducer?.user);
   const { project } = props;
 
   const [comment, setComment] = useState({
@@ -68,8 +73,9 @@ const Comments = (props) => {
     <div>
       <div className='flex flex-row gap-x-4'>
         <img
-          src={image}
-          className='mt-4 w-16 border-2 border-lightSlate h-16 object-fill rounded-full'
+          src={getImage(currUser.avatar, image)}
+          // className='mt-4 w-16 border-2 border-lightSlate h-16 object-fill rounded-full'
+          className='mt-4 w-16 aspect-square border-2 border-lightSlate h-16 object-cover object-center rounded-full'
           alt='profilepic'
         />
         <div className='w-160'>
@@ -107,8 +113,8 @@ const Comments = (props) => {
         <div key={comment?.comment} className='w-160 mb-6'>
           <div className='flex flex-row gap-x-4'>
             <img
-              className="className='mt-4 w-16 border-2 border-lightSlate h-16 object-fill rounded-full"
-              src={image}
+              className="className='mt-4 w-16 aspect-square border-2 border-lightSlate h-16 object-cover object-center rounded-full"
+              src={getImage(comment?.user?.avatar, image)}
               alt='profilePic'
             />
             <div className='flex flex-col'>
@@ -120,7 +126,7 @@ const Comments = (props) => {
                   ({comment?.user?.signedAs})
                 </span>
               </p>
-              <p className='text-sideBarText text-sm'>
+              <p className='text-deepSlate text-xs'>
                 {format(new Date(comment?.commentDate), "do MMM yyyy, h:m a")}
               </p>
               <p className='text-sideBarText'>{comment.comment}</p>

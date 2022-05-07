@@ -7,6 +7,7 @@ import UserCard from "./user-card";
 import Wrapper from "../../components/wrapper/wrapper";
 import Table from "../../components/table/table.jsx";
 import ProfileView from "../bug/profile-view";
+import Loader from '@components/spinner/loader.jsx'
 
 // utils
 import useDateFormat from "../../hooks/useFormat";
@@ -22,6 +23,7 @@ const UsersList = () => {
   const { formatDate } = useDateFormat();
   const [profileModal, setProfileModal] = useState({ modal: false, user: {} });
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const mountProfileData = (user) => {
     console.log(user);
@@ -68,6 +70,7 @@ const UsersList = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     dispatch(getAllUserDetails())
       .then((res) => {
         let roleBasedUsers = { Developer: 0, Tester: 0, User: 0 };
@@ -84,11 +87,14 @@ const UsersList = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
+      }).finally(() => {
+        setLoading(false);
+      })
   }, []);
 
   return (
     <Wrapper>
+      {loading && <Loader />}
       <div className='my-6'>
         <h1 className='text-3xl pb-6 text-sideBarText'>Users Summary</h1>
         <hr />
@@ -120,7 +126,7 @@ const UsersList = () => {
         </div>
       </div>
       <Table
-        data={users ?? []}
+        data={[...users].reverse() ?? []}
         filterValue={filter}
         columns={tableColumns}
         pagination={true}

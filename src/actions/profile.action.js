@@ -9,5 +9,6 @@ export const updateProfile = (Obj) => (dispatch) => {
     })
     .catch((err) => {
       dispatch({ type: EDIT_PROFILE_FAIL, payload: err });
+      throw new Error(err?.message);
     });
 };

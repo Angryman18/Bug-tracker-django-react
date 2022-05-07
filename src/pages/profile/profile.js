@@ -3,6 +3,15 @@ import { useSelector } from "react-redux";
 import { Button } from "@material-tailwind/react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import {app} from "@config/firebase.js";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject
+} from "@firebase/storage";
+import { v4 } from "uuid";
 
 // components
 import Wrapper from "@components/wrapper/wrapper";
@@ -12,7 +21,7 @@ import SelectBox from "@components/select/select";
 import Loader from "@components/spinner/loader.jsx";
 
 // assets
-import user from '@images/user.png';
+import user from "@images/user.png";
 
 // actions
 import { updateProfile } from "@actions/profile.action";
@@ -20,12 +29,13 @@ import { updateProfile } from "@actions/profile.action";
 // avatar = models.ImageField(upload_to='avatar', null=True, blank=True)
 
 const initialState = {
-  avatar: "https://www.google.com",
+  avatar: "",
   technology: "",
   linkedIn: "",
   github: "",
   bio: "",
   portfolio: "",
+  path: "",
   country: "",
 };
 
@@ -33,7 +43,10 @@ const Profile = () => {
   const userInfo = useSelector((state) => state?.AuthReducer?.user);
   const [formData, setFormData] = useState({ ...initialState });
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState({});
+
+  const storage = getStorage(app);
 
   const dispatchEvent = useDispatch();
 
@@ -45,7 +58,8 @@ const Profile = () => {
       bio: userInfo?.bio ?? "",
       portfolio: userInfo?.portfolio ?? "",
       country: userInfo?.country ?? "",
-      avatar: userInfo?.avatar ?? "",
+      avatar: "",
+      path: userInfo?.path ?? "",
     };
     setFormData({ ...parseData });
   }, []);
@@ -54,19 +68,65 @@ const Profile = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const submitHandler = async (e) => {
-    setIsLoading(true);
+  const uploadImageHandler = async () => {
     try {
-      await dispatchEvent(updateProfile(formData));
+      const imageRef = ref(storage, `avatar/${v4()}.jpg`);
+      const response = await uploadBytes(imageRef, formData?.avatar);
+      const avatar = await getDownloadURL(ref(storage, response?.metadata?.fullPath));
+      return {avatar, path: response?.metadata?.fullPath};
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
+
+  const deletePrevisousImage = async () => {
+    try {
+      const deleteObjectRef = ref(storage, formData?.path);
+      const response = await deleteObject(deleteObjectRef);
+      return response;
+    } catch(err) {
+      return Promise.resolve(err)
+    }
+  }
+
+  const submitHandler = async (e) => {
+    try {
+      if (!formData?.avatar) {
+        delete formData.avatar;
+        delete formData?.path;
+        setIsLoading(true);
+        await dispatchEvent(updateProfile(formData));
+      } else {
+        setIsUploading(true)
+        await deletePrevisousImage();
+        const {avatar, path} = await uploadImageHandler();
+        setIsUploading(false)
+        setIsLoading(true);
+        await dispatchEvent(updateProfile({...formData, avatar, path}));
+      }
       toast.success("Profile Updated", {
         theme: "colored",
       });
     } catch (err) {
-      toast.success(err?.message ?? "Something Error Occured", {
+      toast.error(err?.message ?? "Something Error Occured", {
         theme: "colored",
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const imageUploadHandler = (e) => {
+    setFormData({ ...formData, avatar: e.target.files[0] });
+  };
+
+  const showImageHandler = () => {
+    if (!formData?.avatar && !userInfo?.avatar) {
+      return user;
+    } else if (formData?.avatar) {
+      return URL.createObjectURL(formData?.avatar);
+    } else if (userInfo?.avatar) {
+      return userInfo?.avatar;
     }
   };
 
@@ -78,9 +138,21 @@ const Profile = () => {
         <hr />
       </div>
       <div className='xl:w-1/4 sm:w-3/4 w-full min-w-40 flex flex-col gap-y-2.5'>
-          <div>
-              <img src={user} alt='avatar' className='w-32' />
-          </div>
+        <input
+          className='hidden'
+          id='profilepic'
+          type='file'
+          accepts='.jpg, .png, .jpeg'
+          alt='preview'
+          onChange={imageUploadHandler}
+        />
+        <label htmlFor='profilepic'>
+          <img
+            src={showImageHandler()}
+            alt='avatar'
+            className='w-32 aspect-square object-center object-cover rounded-full hover:brightness-75 duration-100 cursor-pointer'
+          />
+        </label>
         <DefaultInput
           name='Username'
           labelText='Username'
@@ -144,16 +216,17 @@ const Profile = () => {
         />
         <div>
           <Button
-            color='lightBlue'
-            buttonType='filled'
+            color={`${isUploading ? "gray" : "lightBlue"}`}
+            buttonType={`${isUploading ? "outline" : "filled"}`}
+            className={`${isUploading && "pointer-events-none"}`}
             size='regular'
             rounded={false}
             block={false}
             iconOnly={false}
             ripple='light'
-            onClick={submitHandler}
+            onClick={!isUploading ? submitHandler : null}
           >
-            Save Changes
+            {!isUploading ? 'Save Changes' : 'Uploading Image...'}
           </Button>
         </div>
       </div>

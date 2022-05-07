@@ -31,3 +31,5 @@ export const GET_PROJECT_COMMENT = BASE_URL + "get-projects-comments";
 export const ADD_LIKE = BASE_URL + "add-like";
 
 export const EDIT_PROFILE = BASE_URL + "editProfile";
+
+export const GET_DASHBOARD_STATS = BASE_URL + "getDashboardStats";
