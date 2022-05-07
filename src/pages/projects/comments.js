@@ -87,6 +87,7 @@ const Comments = (props) => {
             name='comments'
             value={comment?.comment}
             labelText='Write Your Comment'
+            readOnly={loading}
           />
           <Button
             color={loading ? "gray" : "lightBlue"}
@@ -104,7 +105,7 @@ const Comments = (props) => {
             onClick={submitHandler}
             disabled={loading}
           >
-            Add Comment
+            {!loading ? "Add Comment" : "Adding Comment..."}
           </Button>
         </div>
       </div>
