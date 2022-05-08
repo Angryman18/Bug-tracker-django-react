@@ -56,7 +56,56 @@ const Projects = () => {
   };
 
   useEffect(() => {
-    const Obj = { page: pageNo };
+    const Obj = { page: 1 };
+    setFetchLoading(true);
+    projectService
+    .getProjectPage(Obj)
+    .then((res) => {
+      setProjects({ lastPage: isEmpty(res), data: filterProjects(res, true)});
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+        setPageNo(1)
+        return setFetchLoading(false);
+      });
+  }, [updatelist]);
+
+  // useEffect(() => {
+  //   const Obj = { page: pageNo };
+  //   setFetchLoading(true);
+  //   projectService
+  //     .getProjectPage(Obj)
+  //     .then((res) => {
+  //       setProjects({ lastPage: isEmpty(res), data: filterProjects(res)});
+  //       console.log('this has executed', res)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     })
+  //     .finally(() => {
+  //       return setFetchLoading(false);
+  //     });
+  // }, [pageNo]);
+
+  
+
+  useEffect(() => {
+    setProjects({ ...projects, data: filterProjects() });
+  }, [filterBy]);
+
+  console.log(projects);
+
+  const searchProjectClickHandler = (e, value) => {
+    setProjectDetails({ project: value, reportedBy: value?.user });
+    setDisplayProjectDetails(!displayProjectDetails);
+  };
+
+  const loadMoreHandler = (e) => {
+    e.preventDefault();
+    setPageNo(pageNo + 1);
+    const Obj = { page: pageNo+1 };
     setFetchLoading(true);
     projectService
       .getProjectPage(Obj)
@@ -69,36 +118,6 @@ const Projects = () => {
       .finally(() => {
         return setFetchLoading(false);
       });
-  }, [pageNo]);
-
-  useEffect(() => {
-    const Obj = { page: pageNo };
-    setFetchLoading(true);
-    projectService
-      .getProjectPage(Obj)
-      .then((res) => {
-        setProjects({ lastPage: isEmpty(res), data: filterProjects(res, true)});
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        return setFetchLoading(false);
-      });
-  }, [updatelist]);
-
-  useEffect(() => {
-    setProjects({ ...projects, data: filterProjects() });
-  }, [filterBy]);
-
-  const searchProjectClickHandler = (e, value) => {
-    setProjectDetails({ project: value, reportedBy: value?.user });
-    setDisplayProjectDetails(!displayProjectDetails);
-  };
-
-  const loadMoreHandler = (e) => {
-    e.preventDefault();
-    setPageNo(pageNo + 1);
   };
 
   const handleClick = (e, data) => {

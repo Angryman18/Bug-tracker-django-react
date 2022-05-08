@@ -13,7 +13,8 @@ const ProjectCard = ({ projectObj, onClick }) => {
     <Card className='h-44 my-4'>
       <CardBody>
         <h1 onClick={(e) => onClick(e, projectObj)} className='link cursor-pointer text-xl'>
-          {projectObj?.projectName}
+          {projectObj?.projectName.slice(0, 35)}
+          {projectObj?.projectName?.length > 35 ? "..." : ""}
         </h1>
         <p className='text-sm text-disbaledText py-0.5'>
           {formatDate(projectObj?.uploadData)}
